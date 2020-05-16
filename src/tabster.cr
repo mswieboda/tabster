@@ -1,6 +1,7 @@
-# TODO: Write documentation for `Tabster`
-module Tabster
-  VERSION = "0.1.0"
+require "kemal"
 
-  # TODO: Put your code here
+get "/" do
+  "Hello Tabster!"
 end
+
+Kemal.run
