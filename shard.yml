@@ -1,0 +1,13 @@
+name: tabster
+version: 0.1.0
+
+authors:
+  - Matt Swieboda <mswiebod@gmail.com>
+
+targets:
+  tabster:
+    main: src/tabster.cr
+
+crystal: 0.34.0
+
+license: MIT
