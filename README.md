@@ -1,27 +1,22 @@
 # tabster
 
-TODO: Write a description here
-
 ## Installation
 
-TODO: Write installation instructions here
+```
+shards install
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+Needed to find openssl library (installed via `brew install openssl`)
 
-## Development
+```
+# can put this in `.zshrc` / `.bash_profile` for ease of use:
+export PKG_CONFIG_PATH="/usr/local/opt/openssl@1.1/lib/pkgconfig"
+```
 
-TODO: Write development instructions here
+To run the backend Kemal web app:
 
-## Contributing
-
-1. Fork it (<https://github.com/your-github-user/tabster/fork>)
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
-
-## Contributors
-
-- [Matt Swieboda](https://github.com/your-github-user) - creator and maintainer
+```
+crystal run src/tabster.cr
+```
