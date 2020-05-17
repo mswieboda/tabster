@@ -1,7 +1,7 @@
 require "kemal"
 
-get "/" do
-  "Hello Tabster!"
+get "/" do |env|
+  render "src/views/app.ecr", "src/views/layouts/react.ecr"
 end
 
 Kemal.run
