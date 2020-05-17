@@ -1,0 +1,14 @@
+.app {
+  text-align: center;
+  background-color: #030303;
+}
+
+.app-header {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 33px;
+  color: #00cc00;
+}
