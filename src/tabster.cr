@@ -1,7 +1,11 @@
 require "kemal"
 
 get "/" do |env|
-  render "src/views/app.ecr", "src/views/layouts/react.ecr"
+  serve_react(env)
+end
+
+get "/*" do |env|
+  serve_react(env)
 end
 
 before_all "/tabs/:id" do |env|
@@ -20,6 +24,12 @@ get "/api/tabs/:id" do |env|
     "artist": "Charli XCX",
     "tab":    "alskdjflasdjfl asjdflkjsdf",
   }.to_json
+end
+
+def serve_react(env)
+  env.response.headers["Access-Control-Allow-Origin"] = "*"
+  file_path = Kemal.config.public_folder + "/index.html"
+  send_file env, file_path
 end
 
 Kemal.run
