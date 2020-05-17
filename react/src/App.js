@@ -1,12 +1,12 @@
 import React from 'react';
 import './App.scss';
+import Tab from './Tab';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link,
-  useParams
-} from "react-router-dom";
+} from 'react-router-dom';
 
 function App() {
   return (
@@ -53,16 +53,6 @@ function TabLink(props) {
 
   return (
     <Link to={`/tabs/${id}`}>{title} - {artist}</Link>
-  );
-}
-
-function Tab() {
-  let { id } = useParams();
-
-  return (
-    <div>
-      <h3>Tab: {id}</h3>
-    </div>
   );
 }
 
