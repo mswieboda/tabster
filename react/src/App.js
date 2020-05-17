@@ -39,12 +39,20 @@ function Tabs() {
   return (
     <ul>
       <li>
-        <Link to="/tabs/123">123 - Testing</Link>
+        <TabLink id="lipgloss" artist="Charlie XCX" title="Lipgloss"/>
       </li>
       <li>
-        <Link to="/tabs/lipgloss">Lipgloss - Charlie XCX</Link>
+        <TabLink id="test-123" artist="Testing" title="123"/>
       </li>
     </ul>
+  );
+}
+
+function TabLink(props) {
+  const {id, title, artist} = props;
+
+  return (
+    <Link to={`/tabs/${id}`}>{title} - {artist}</Link>
   );
 }
 
