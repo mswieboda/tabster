@@ -1,5 +1,7 @@
 require "kemal"
 
+public_folder "react/build"
+
 get "/" do |env|
   serve_react(env)
 end

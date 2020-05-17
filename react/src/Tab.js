@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-// import './Tab.scss';
+import './Tab.scss';
 
 function Tab() {
   const [loaded, setLoaded] = useState(false);
