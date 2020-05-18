@@ -1,3 +1,4 @@
+require "../config/config"
 require "kemal"
 
 get "/" do |env|
@@ -18,12 +19,20 @@ get "/api/tabs/:id" do |env|
 
   id = env.params.url["id"]
 
-  {
-    "id":     id,
-    "title":  "Lipgloss",
-    "artist": "Charli XCX",
-    "tab":    "alskdjflasdjfl asjdflkjsdf",
-  }.to_json
+  tabs = Tab.all.where { Tab._id == id }
+
+  if tabs.first
+    tab = tabs.first.as(Tab)
+
+    {
+      "id":     tab.id,
+      "title":  tab.title,
+      "artist": tab.artist,
+      "tab":    tab.tab,
+    }.to_json
+  else
+    "404"
+  end
 end
 
 def serve_react(env)

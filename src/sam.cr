@@ -12,4 +12,9 @@ load_dependencies "jennifer"
 #   puts "ping"
 # end
 
+desc "dummy data"
+task "dummy" do
+  tab = Tab.create({title: "Lipgloss", artist: "Charli XCX", tab: "...\nWIP :)\n..."})
+end
+
 Sam.help
