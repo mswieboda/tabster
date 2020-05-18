@@ -1,0 +1,17 @@
+default: &default
+  host: localhost
+  user: tabster
+  password: retsbat321!
+  adapter: postgres
+
+development:
+  <<: *default
+  db: tabster_development
+
+test:
+  <<: *default
+  db: tabster_test
+
+production:
+  <<: *default
+  db: tabster_production
