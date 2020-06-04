@@ -1,12 +1,13 @@
 import React from 'react';
 import './App.scss';
 import Tabs from './Tabs';
-import Tab from './Tab';
+
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link,
+  Redirect,
 } from 'react-router-dom';
 
 function App() {
@@ -17,11 +18,9 @@ function App() {
 
         <Switch>
           <Route exact path="/">
-            <Tabs />
+            <Redirect to="/tabs" />
           </Route>
-          <Route path="/tabs/:artist/:title">
-            <Tab />
-          </Route>
+          <Route path="/tabs" component={Tabs} />
         </Switch>
       </div>
     </Router>
