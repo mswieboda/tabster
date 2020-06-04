@@ -20,3 +20,15 @@ To run the backend Kemal web app:
 ```
 crystal run src/tabster.cr
 ```
+
+To run the React dev server, first `cd` into `./react` directory
+
+```
+yarn start
+```
+
+To compile the React build for releasing:
+
+```
+yarn build
+```
