@@ -18,7 +18,7 @@ function App() {
           <Route exact path="/">
             <Tabs />
           </Route>
-          <Route path="/tabs/:id">
+          <Route path="/tabs/:artist/:title">
             <Tab />
           </Route>
         </Switch>

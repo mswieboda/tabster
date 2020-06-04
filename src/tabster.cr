@@ -10,16 +10,14 @@ get "/*" do |env|
 end
 
 before_all "/tabs/:id" do |env|
-  puts "Setting response content type"
   env.response.content_type = "application/json"
 end
 
-get "/api/tabs/:id" do |env|
-  puts env.response.headers["Content-Type"] # => "application/json"
-
-  id = env.params.url["id"]
-
-  tabs = Tab.all.where { Tab._id == id }
+get "/api/tabs/:artist/:title" do |env|
+  # Fix until Kemal supports + as whitespace in params
+  artist = env.params.url["artist"].gsub('+', ' ')
+  title = env.params.url["title"].gsub('+', ' ')
+  tabs = Tab.all.where { lower(Tab._artist) == artist.downcase && lower(Tab._title) == title.downcase }
 
   if tabs.first
     tab = tabs.first.as(Tab)
@@ -31,7 +29,7 @@ get "/api/tabs/:id" do |env|
       "tab":    tab.tab,
     }.to_json
   else
-    "404"
+    halt env, status_code: 404
   end
 end
 
