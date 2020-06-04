@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Route,
-  Link,
-  useRouteMatch,
-} from 'react-router-dom';
 import axios from 'axios';
-import Tab from './Tab';
+import TabLink from './TabLink';
 
 function Tabs() {
   const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [tabs, setTabs] = useState([]);
-  let { path } = useRouteMatch();
 
   useEffect(() => {
     if (loaded || loading) {
@@ -43,26 +37,17 @@ function Tabs() {
   }
 
   return (
-    <div>
-      <ul>
-        {
-          tabs.length && tabs.map(tab => {
-            return (
-              <li key={tab.id}>
-                <TabLink path={path} artist={tab.artist} title={tab.title} />
-              </li>
-            );
-          })
-        }
-      </ul>
-      <Route path={`${path}/:artist/:title`} component={Tab} />
-    </div>
-  );
-}
-
-function TabLink({ path, artist, title }) {
-  return (
-    <Link to={`${path}/${artist}/${title}`}>{title} - {artist}</Link>
+    <ul>
+      {
+        tabs.length && tabs.map(tab => {
+          return (
+            <li key={tab.id}>
+              <TabLink artist={tab.artist} title={tab.title} text={`${tab.title} - ${tab.artist}`} />
+            </li>
+          );
+        })
+      }
+    </ul>
   );
 }
 

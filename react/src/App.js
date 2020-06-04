@@ -1,6 +1,8 @@
 import React from 'react';
 import './App.scss';
+import ArtistTabs from './ArtistTabs';
 import Tabs from './Tabs';
+import Tab from './Tab';
 
 import {
   BrowserRouter as Router,
@@ -20,7 +22,17 @@ function App() {
           <Route exact path="/">
             <Redirect to="/tabs" />
           </Route>
-          <Route path="/tabs" component={Tabs} />
+          <Route path="/tabs">
+            <Switch>
+              <Route exact path="/tabs" component={Tabs}/>
+              <Route path="/tabs/:artist">
+                <Switch>
+                  <Route exact path="/tabs/:artist" component={ArtistTabs}/>
+                  <Route exact path="/tabs/:artist/:title" component={Tab}/>
+                </Switch>
+              </Route>
+            </Switch>
+          </Route>
         </Switch>
       </div>
     </Router>

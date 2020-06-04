@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
+import TabLink from './TabLink';
 import './Tab.scss';
 
 function Tab() {
@@ -45,9 +47,15 @@ function Tab() {
 
   return (
     <div>
-      <h3>Title: {title}</h3>
-      <h3>Artist: {artist}</h3>
-      <h3>Tab:</h3>
+      <p>
+        Title:{' '}
+        <TabLink artist={artist} title={title} />
+      </p>
+      <p>
+        Artist:{' '}
+        <Link to={`/tabs/${artist}`}>{artist}</Link>
+      </p>
+      <p>Tab:</p>
       <pre>{tab}</pre>
     </div>
   );
