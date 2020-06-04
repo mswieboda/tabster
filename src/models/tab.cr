@@ -9,4 +9,13 @@ class Tab < Jennifer::Model::Base
     created_at: Time?,
     updated_at: Time?,
   )
+
+  def to_json(json : JSON::Builder)
+    json.object do
+      json.field "id", id
+      json.field "artist", artist
+      json.field "title", title
+      json.field "tab", tab
+    end
+  end
 end

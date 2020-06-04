@@ -9,8 +9,13 @@ get "/*" do |env|
   serve_react(env)
 end
 
-before_all "/tabs/:id" do |env|
-  env.response.content_type = "application/json"
+before_all "/api/tabs" { |env| set_content_type_json(env) }
+before_all "/api/tabs/:artist/:title" { |env| set_content_type_json(env) }
+
+get "/api/tabs" do |env|
+  tabs = Tab.all.limit(25)
+
+  tabs.to_a.to_json
 end
 
 get "/api/tabs/:artist/:title" do |env|
@@ -20,17 +25,14 @@ get "/api/tabs/:artist/:title" do |env|
   tabs = Tab.all.where { lower(Tab._artist) == artist.downcase && lower(Tab._title) == title.downcase }
 
   if tabs.first
-    tab = tabs.first.as(Tab)
-
-    {
-      "id":     tab.id,
-      "title":  tab.title,
-      "artist": tab.artist,
-      "tab":    tab.tab,
-    }.to_json
+    tabs.first.as(Tab).to_json
   else
     halt env, status_code: 404
   end
+end
+
+def set_content_type_json(env)
+  env.response.content_type = "application/json"
 end
 
 def serve_react(env)

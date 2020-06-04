@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.scss';
+import Tabs from './Tabs';
 import Tab from './Tab';
 import {
   BrowserRouter as Router,
@@ -32,27 +33,6 @@ function TopNav() {
     <header className="app-header">
       <Link to="/">tabster</Link>
     </header>
-  );
-}
-
-function Tabs() {
-  return (
-    <ul>
-      <li>
-        <TabLink id="lipgloss" artist="Charlie XCX" title="Lipgloss"/>
-      </li>
-      <li>
-        <TabLink id="test-123" artist="Testing" title="123"/>
-      </li>
-    </ul>
-  );
-}
-
-function TabLink(props) {
-  const {id, title, artist} = props;
-
-  return (
-    <Link to={`/tabs/${id}`}>{title} - {artist}</Link>
   );
 }
 
