@@ -54,6 +54,18 @@ then to deploy:
 git push heroku master
 ```
 
+Make sure the web service is started:
+
+```
+heroku ps:scale web=1
+```
+
+and to check:
+
+```
+heroku ps
+```
+
 If you'd like to compile the UI assets via heroku only then use the `build_assets` Procfile process-type:
 
 ```
