@@ -17,10 +17,10 @@ shards_build: clean_bin bin
 old_sam:
 	$(CRYSTAL_BIN) run $(SAM_PATH) -- $(filter-out $@,$(MAKECMDGOALS))
 
-sam: shards_build
+sam:
 	./bin/sam $(filter-out $@,$(MAKECMDGOALS))
 
-tabster: shards_build
+tabster:
 	./bin/tabster --port $(PORT)
 
 %:
