@@ -40,7 +40,10 @@ module Tabster
 
   get "/api/tabs/:artist" do |env|
     artist = env.params.url["artist"].gsub('+', ' ')
-    tabs = Tab.all.relation(:artist).where { Artist._name == artist }.limit(25)
+    tabs = Tab.all.relation(:artist)
+      .where { lower(_artists__name) == artist.downcase }
+      .limit(25)
+
     tabs.to_a.to_json
   end
 
@@ -48,7 +51,9 @@ module Tabster
     # Fix until Kemal supports + as whitespace in params
     artist = env.params.url["artist"].gsub('+', ' ')
     title = env.params.url["title"].gsub('+', ' ')
-    tabs = Tab.all.relation(:artist).where { lower(Artist._artist) == artist.downcase && lower(Tab._title) == title.downcase }
+    tabs = Tab.all.relation(:artist)
+      .where { (lower(_artists__name) == artist.downcase) & (lower(_title) == title.downcase) }
+      .limit(1)
 
     if tabs.first
       tabs.first.as(Tab).to_json

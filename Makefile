@@ -14,7 +14,7 @@ clean:
 build: clean bin
 	shards build
 
-sam: build
+sam:
 	./bin/sam $(filter-out $@,$(MAKECMDGOALS))
 
 server:

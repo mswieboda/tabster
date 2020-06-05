@@ -15,7 +15,7 @@ class Tab < Jennifer::Model::Base
   def to_json(json : JSON::Builder)
     json.object do
       json.field "id", id
-      json.field "artist", artist
+      json.field "artist", artist.try(&.name)
       json.field "title", title
       json.field "tab", tab
     end

@@ -9,7 +9,10 @@ module Tabster
 
   get "/api/artists/:artist" do |env|
     artist = env.params.url["artist"].gsub('+', ' ')
-    tabs = Tab.all.where { lower(Tab._artist) == artist.downcase }.limit(25)
+    tabs = Tab.all.relation(:artist)
+      .where { lower(_artists__name) == artist.downcase }
+      .limit(25)
+
     tabs.to_a.to_json
   end
 end
