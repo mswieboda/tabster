@@ -3,25 +3,24 @@
 CRYSTAL_BIN ?= `which crystal`
 SAM_PATH ?= "src/sam.cr"
 PORT=3000
-.PHONY: sam old_sam tabster clean_bin shards_build
+.PHONY: clean build sam server tabster
 
 bin:
 	mkdir -p bin
 
-clean_bin:
+clean:
 	rm -rf ./bin
 
-shards_build: clean_bin bin
+build: clean bin
 	shards build
-
-old_sam:
-	$(CRYSTAL_BIN) run $(SAM_PATH) -- $(filter-out $@,$(MAKECMDGOALS))
 
 sam:
 	./bin/sam $(filter-out $@,$(MAKECMDGOALS))
 
-tabster:
+server:
 	./bin/tabster --port $(PORT)
+
+tabster: build server
 
 %:
 	@:
