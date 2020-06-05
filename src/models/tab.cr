@@ -4,11 +4,13 @@ class Tab < Jennifer::Model::Base
   mapping(
     id: Primary32,
     title: String,
-    artist: String,
+    artist_id: Int32?,
     tab: String,
     created_at: Time?,
     updated_at: Time?,
   )
+
+  belongs_to :artist, Artist
 
   def to_json(json : JSON::Builder)
     json.object do

@@ -21,6 +21,42 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: artists; Type: TABLE; Schema: public; Owner: tabster
+--
+
+CREATE TABLE public.artists (
+    id integer NOT NULL,
+    name character varying(254) NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.artists OWNER TO tabster;
+
+--
+-- Name: artists_id_seq; Type: SEQUENCE; Schema: public; Owner: tabster
+--
+
+CREATE SEQUENCE public.artists_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.artists_id_seq OWNER TO tabster;
+
+--
+-- Name: artists_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: tabster
+--
+
+ALTER SEQUENCE public.artists_id_seq OWNED BY public.artists.id;
+
+
+--
 -- Name: migration_versions; Type: TABLE; Schema: public; Owner: tabster
 --
 
@@ -61,10 +97,10 @@ ALTER SEQUENCE public.migration_versions_id_seq OWNED BY public.migration_versio
 CREATE TABLE public.tabs (
     id integer NOT NULL,
     title character varying(254) NOT NULL,
-    artist character varying(254) NOT NULL,
     tab character varying(254) NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    artist_id integer
 );
 
 
@@ -93,6 +129,13 @@ ALTER SEQUENCE public.tabs_id_seq OWNED BY public.tabs.id;
 
 
 --
+-- Name: artists id; Type: DEFAULT; Schema: public; Owner: tabster
+--
+
+ALTER TABLE ONLY public.artists ALTER COLUMN id SET DEFAULT nextval('public.artists_id_seq'::regclass);
+
+
+--
 -- Name: migration_versions id; Type: DEFAULT; Schema: public; Owner: tabster
 --
 
@@ -104,6 +147,14 @@ ALTER TABLE ONLY public.migration_versions ALTER COLUMN id SET DEFAULT nextval('
 --
 
 ALTER TABLE ONLY public.tabs ALTER COLUMN id SET DEFAULT nextval('public.tabs_id_seq'::regclass);
+
+
+--
+-- Name: artists artists_pkey; Type: CONSTRAINT; Schema: public; Owner: tabster
+--
+
+ALTER TABLE ONLY public.artists
+    ADD CONSTRAINT artists_pkey PRIMARY KEY (id);
 
 
 --
@@ -120,6 +171,14 @@ ALTER TABLE ONLY public.migration_versions
 
 ALTER TABLE ONLY public.tabs
     ADD CONSTRAINT tabs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tabs fk_cr_647009562c; Type: FK CONSTRAINT; Schema: public; Owner: tabster
+--
+
+ALTER TABLE ONLY public.tabs
+    ADD CONSTRAINT fk_cr_647009562c FOREIGN KEY (artist_id) REFERENCES public.artists(id) ON UPDATE RESTRICT ON DELETE RESTRICT;
 
 
 --

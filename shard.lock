@@ -22,7 +22,7 @@ shards:
 
   jennifer:
     github: imdrasil/jennifer.cr
-    version: 0.8.4
+    version: 0.9.0
 
   kemal:
     github: kemalcr/kemal
