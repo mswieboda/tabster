@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useInput } from './hooks/useInput';
+import TabLink from './TabLink';
 
 function NewTab() {
   const { value: title, bind: bindTitle } = useInput('');
@@ -10,6 +11,7 @@ function NewTab() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState(null);
+  const [artistName, setArtistName] = useState(null);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -26,8 +28,7 @@ function NewTab() {
     }).then(response => {
       const data = response.data;
 
-      alert(data);
-
+      setArtistName(data.artist);
       setSaving(false);
       setSaved(true);
     }).catch(error => {
@@ -41,8 +42,15 @@ function NewTab() {
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        {!!error && `Error: ${error}`}
-        {!error && saved && "Saved!"}
+        {!!error &&
+          <span>Error: {error}</span>
+        }
+        {!error && saved &&
+          <span>
+            Saved!{' '}
+            <TabLink artist={artistName} title={title}>View new tab</TabLink>
+          </span>
+        }
       </div>
 
       <div>
@@ -53,7 +61,7 @@ function NewTab() {
       <div>
         <label>Artist</label>
         <select {...bindArtistId} required>
-          <option>Select an Artist</option>
+          <option value="">Select an Artist</option>
           <option value="1">Charli XCX</option>
           <option value="new">+ New Artist</option>
         </select>

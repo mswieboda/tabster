@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function TabLink({ artist, title, text = title }) {
+function TabLink({ children, artist, title }) {
   return (
-    <Link to={`/tabs/${artist}/${title}`}>{text}</Link>
+    <Link to={`/tabs/${artist}/${title}`}>
+      {children || title}
+    </Link>
   );
 }
 

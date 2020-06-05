@@ -42,7 +42,7 @@ function Tabs() {
         tabs.length && tabs.map(tab => {
           return (
             <li key={tab.id}>
-              <TabLink artist={tab.artist} title={tab.title} text={`${tab.title} - ${tab.artist}`} />
+              <TabLink artist={tab.artist} title={tab.title}>{tab.title} - {tab.artist}</TabLink>
             </li>
           );
         })
