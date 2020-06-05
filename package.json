@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "cd react && yarn build",
-    "heroku-postbuild": "cd react && yarn build"
+    "heroku-postbuild": "cd react && yarn install && yarn build"
   },
   "engines": {
     "node": "12.x",
