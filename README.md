@@ -60,22 +60,16 @@ then to deploy:
 git push heroku master
 ```
 
-Make sure the web service is started:
+Make sure the web service is initially set up to run one web node:
 
 ```
 heroku ps:scale web=1
 ```
 
-and to check:
+and to check which processes are running (`web` should be `up`):
 
 ```
 heroku ps
-```
-
-If you'd like to compile the UI assets via heroku only then use the `build_assets` Procfile process-type:
-
-```
-heroku run build_assets
 ```
 
 To create DB, or to run migrations, use the `sam` Procfile process-type:
