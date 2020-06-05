@@ -39,7 +39,7 @@ function Tabs() {
   return (
     <ul>
       {
-        tabs.length && tabs.map(tab => {
+        !!tabs.length && tabs.map(tab => {
           return (
             <li key={tab.id}>
               <TabLink artist={tab.artist} title={tab.title}>{tab.title} - {tab.artist}</TabLink>

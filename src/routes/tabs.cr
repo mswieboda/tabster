@@ -8,6 +8,15 @@ module Tabster
     tabs.to_a.to_json
   end
 
+  get "/api/tabs?" do |env|
+    query = env.params.query["q"].as(String)
+    tabs = Tab.all.relation(:artist)
+      .where { (_artists__name.ilike("%#{query}%")) | (_title.ilike("%#{query}%")) }
+      .limit(25)
+
+    tabs.to_a.to_json
+  end
+
   post "/api/tabs" do |env|
     title = env.params.json["title"].as(String)
     artist_id = env.params.json["artist_id"].as(Int64 | Nil)
