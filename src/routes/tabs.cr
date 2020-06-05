@@ -4,17 +4,21 @@ module Tabster
   before_all "/api/tabs/:artist/:title" { |env| set_content_type_json(env) }
 
   get "/api/tabs" do |env|
-    tabs = Tab.all.limit(25)
-    tabs.to_a.to_json
-  end
+    query = env.params.query["q"]?
+    tabs = Tab.all
 
-  get "/api/tabs?" do |env|
-    query = env.params.query["q"].as(String)
-    tabs = Tab.all.relation(:artist)
-      .where { (_artists__name.ilike("%#{query}%")) | (_title.ilike("%#{query}%")) }
-      .limit(25)
+    if query
+      if query.blank?
+        tabs = tabs.none
+      else
+        tabs = tabs.relation(:artist)
+          .where { (_artists__name.ilike("%#{query}%")) | (_title.ilike("%#{query}%")) }
+      end
+    end
 
-    tabs.to_a.to_json
+    tabs.limit(25)
+      .to_a
+      .to_json
   end
 
   post "/api/tabs" do |env|
@@ -22,11 +26,6 @@ module Tabster
     artist_id = env.params.json["artist_id"].as(Int64 | Nil)
     artist = env.params.json["artist"].as(String | Nil)
     tab = env.params.json["tab"].as(String)
-
-    puts "title: #{title}"
-    puts "artist_id: #{artist_id}"
-    puts "artist: #{artist}"
-    puts "tab: #{tab}"
 
     if artist_id
       Tab.create({
