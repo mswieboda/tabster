@@ -48,6 +48,12 @@ To deploy to heroku, first add the custom crystal buildpack:
 heroku create app_name --buildpack https://github.com/84codes/heroku-buildpack-crystal.git
 ```
 
+Then add the nodejs buildpack for yarn installation and building release assets:
+
+```
+heroku buildpacks:add --index 1 heroku/nodejs
+```
+
 then to deploy:
 
 ```
