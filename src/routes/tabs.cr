@@ -10,7 +10,7 @@ module Tabster
 
   post "/api/tabs" do |env|
     title = env.params.json["title"].as(String)
-    artist_id = env.params.json["artist_id"].as(String | Nil)
+    artist_id = env.params.json["artist_id"].as(Int64 | Nil)
     artist = env.params.json["artist"].as(String | Nil)
     tab = env.params.json["tab"].as(String)
 
@@ -22,7 +22,7 @@ module Tabster
     if artist_id
       Tab.create({
         title:     title,
-        artist_id: artist_id,
+        artist_id: artist_id.to_i,
         tab:       tab,
       }).to_json
     elsif artist

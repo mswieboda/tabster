@@ -20,7 +20,7 @@ function NewTab() {
 
     axios.post('/api/tabs', {
       title: title,
-      artist_id: artistId !== 'new' ? artistId : null,
+      artist_id: artistId !== 'new' ? parseInt(artistId) : null,
       artist: artistId === 'new' ? artist : null,
       tab: tab
     }).then(response => {
