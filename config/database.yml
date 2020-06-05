@@ -13,5 +13,5 @@ test:
   db: tabster_test
 
 production:
-  <<: *default
-  db: tabster_production
+  encoding: utf8
+  pool: 15
