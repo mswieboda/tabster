@@ -1,5 +1,7 @@
 import React from 'react';
-import './App.scss';
+
+import TopNav from './TopNav';
+import NewTab from './NewTab';
 import ArtistTabs from './ArtistTabs';
 import Tabs from './Tabs';
 import Tab from './Tab';
@@ -8,9 +10,10 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
   Redirect,
 } from 'react-router-dom';
+
+import './App.scss';
 
 function App() {
   return (
@@ -25,6 +28,7 @@ function App() {
           <Route path="/tabs">
             <Switch>
               <Route exact path="/tabs" component={Tabs}/>
+              <Route exact path="/tabs/new" component={NewTab}/>
               <Route path="/tabs/:artist">
                 <Switch>
                   <Route exact path="/tabs/:artist" component={ArtistTabs}/>
@@ -36,14 +40,6 @@ function App() {
         </Switch>
       </div>
     </Router>
-  );
-}
-
-function TopNav() {
-  return (
-    <header className="app-header">
-      <Link to="/">tabster</Link>
-    </header>
   );
 }
 
