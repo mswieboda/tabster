@@ -12,23 +12,15 @@ get "/*" do |env|
 end
 
 error 404 do |env, exc|
-  puts ">>>>>>>>>>"
-  puts ">>>>>>>>>> 404"
-  puts ">>>>>>>>>>"
-  puts env.response.headers
-  "This is a customized 404 page."
+  {status: 404, message: exc.message}
 end
 
-error 403 do
-  "Access Forbidden!"
+error 403 do |env, exc|
+  {status: 403, message: exc.message}
 end
 
 error 500 do |env, exc|
-  puts ">>>>>>>>>>"
-  puts ">>>>>>>>>> 404"
-  puts ">>>>>>>>>>"
-  puts env.response.headers
-  "Everything's broken!"
+  {status: 403, message: exc.message}
 end
 
 def set_content_type_json(env)
