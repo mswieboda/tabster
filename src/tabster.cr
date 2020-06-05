@@ -12,15 +12,15 @@ get "/*" do |env|
 end
 
 error 404 do |env, exc|
-  {status: 404, message: exc.message}
+  {status_code: 404, message: exc.message}.to_json
 end
 
 error 403 do |env, exc|
-  {status: 403, message: exc.message}
+  {status_code: 403, message: exc.message}.to_json
 end
 
 error 500 do |env, exc|
-  {status: 403, message: exc.message}
+  {status_code: 403, message: exc.message}.to_json
 end
 
 def set_content_type_json(env)

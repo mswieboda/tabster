@@ -59,14 +59,16 @@ module Tabster
     # Fix until Kemal supports + as whitespace in params
     artist = env.params.url["artist"].gsub('+', ' ')
     title = env.params.url["title"].gsub('+', ' ')
-    tabs = Tab.all.relation(:artist)
+    tab = Tab.all.relation(:artist)
       .where { (lower(_artists__name) == artist.downcase) & (lower(_title) == title.downcase) }
       .limit(1)
+      .first
 
-    if tabs.first
-      tabs.first.as(Tab).to_json
+    if tab
+      tab.to_json
     else
-      halt env, status_code: 404
+      response = {status_code: 404, message: "Tab not found"}.to_json
+      halt env, status_code: 404, response: response
     end
   end
 end

@@ -30,10 +30,11 @@ function Tab() {
       setLoaded(true);
       setLoading(false);
     }).catch(error => {
-      console.log(error);
+      const data = error.response.data;
+      console.log(data.message);
       setLoaded(true);
       setLoading(false);
-      setError(error.message);
+      setError(data.message);
     });
   }, [loaded, loading, params.artist, params.title]);
 

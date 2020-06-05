@@ -13,7 +13,8 @@ function TopNav() {
     axios.get(`/api/tabs?q=${event.target.value}`).then(response => {
       setTabs(response.data);
     }).catch(error => {
-      console.log(error);
+      const data = error.response.data;
+      console.log(data.message);
     });
   };
 
