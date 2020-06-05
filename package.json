@@ -8,6 +8,6 @@
   },
   "engines": {
     "node": "12.x",
-    "yarn": "1.x",
+    "yarn": "1.x"
   }
 }
