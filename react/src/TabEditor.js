@@ -1,26 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
+import {Controlled as CodeMirror} from 'react-codemirror2';
 
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/theme/material.css';
 import './TabEditor.scss';
 
-function tabToLines(tab) {
-  return tab.split('\n');
-}
-
-function TabEditor({tab}) {
-  const [tabLines] = useState(tabToLines(tab));
-
+function TabEditor({value, onChange}) {
   return (
-    <div className="tab-editor">
-      {
-        tabLines.map(tabLine => {
-          return (
-            <pre>
-              {tabLine}
-            </pre>
-          )
-        })
-      }
-    </div>
+    <CodeMirror
+      value={value}
+      options={{
+        mode: 'null',
+        theme: 'material',
+        lineNumbers: true
+      }}
+      onBeforeChange={(editor, data, value) => onChange({ target: { value: value } })}
+    />
   );
 }
 

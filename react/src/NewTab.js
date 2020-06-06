@@ -9,8 +9,7 @@ import TabEditor from './TabEditor';
 
 import './NewTab.scss';
 
-const tabPlaceholder = `
-e|-------------
+const tabPlaceholder = `e|-------------
 B|-------------
 G|-------------
 D|-------------
@@ -22,7 +21,7 @@ function NewTab() {
   const { value: title, bind: bindTitle } = useInput('');
   const [artistId, setArtistId] = useState(null);
   const [artist, setArtist] = useState("");
-  const [tab, setTab] = useState(tabPlaceholder);
+  const { value: tab, bind: bindTab } = useInput(tabPlaceholder);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState(null);
@@ -34,6 +33,7 @@ function NewTab() {
     if (saving) return;
 
     setSaving(true);
+    setError(null);
 
     axios.post('/api/tabs', {
       title: title,
@@ -82,7 +82,7 @@ function NewTab() {
 
       <div className="field tab-field">
         <label>Tab</label>
-        <TabEditor tab={tab} />
+        <TabEditor {...bindTab} />
       </div>
 
       <div className="field">
