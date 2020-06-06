@@ -53,25 +53,28 @@ function NewTab() {
   var tabPlaceholder = "e|-----\nB|-----\nG|-----\nD|-----\nA|-----\nE|-----\n";
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="new-tab-form">
       {error &&
         <p>
           Error: {error}
         </p>
       }
 
-      <div className="field">
-        <label>Title</label>
-        <TextInput {...bindTitle} required placeholder="Tab song title" />
+      <div className="meta-input">
+        <div className="field">
+          <label>Title</label>
+          <TextInput {...bindTitle} required placeholder="Tab song title" />
+        </div>
+
+        <div className="field">
+          <label>Artist</label>
+          <ArtistInput setArtistId={setArtistId} setArtist={setArtist} />
+        </div>
       </div>
 
-      <div className="field">
-        <label>Artist</label>
-        <ArtistInput setArtistId={setArtistId} setArtist={setArtist} />
-      </div>
-
-      <div className="field">
+      <div className="field tab-field">
         <label>Tab</label>
+        {/*
         <textarea
           className="tab-input"
           {...bindTab}
@@ -81,6 +84,10 @@ function NewTab() {
           cols="90"
         >
         </textarea>
+        */}
+        <div>
+          Tab here
+        </div>
       </div>
 
       <div className="field">
