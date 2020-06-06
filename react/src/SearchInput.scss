@@ -1,0 +1,29 @@
+.search-input-container {
+  padding: 5px;
+
+  .icon {
+    vertical-align: middle;
+  }
+
+  .search-input {
+    background: #030303;
+    border: none;
+    outline: none;
+    color: #00cc00;
+    font-weight: bold;
+    margin: 3px;
+
+    &:not(:valid) ~ .search-reset {
+      visibility: hidden;
+    }
+  }
+
+  .search-reset {
+    border: 1px solid transparent;
+    background-color: transparent;
+    outline: none;
+    vertical-align: middle;
+    cursor: pointer;
+    color: #00cc00;
+  }
+}

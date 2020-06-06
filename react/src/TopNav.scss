@@ -1,13 +1,36 @@
-.app-header {
-  text-align: center;
+.header {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: 33px;
-  color: #00cc00;
+  align-items: center;
+  margin-bottom: 15px;
+
+  .app-banner {
+    flex: 2 0 auto;
+    font-size: 33px;
+    color: #00cc00;
+  }
+}
+
+.app .header a:hover {
+  text-decoration: none;
 }
 
 .links {
-  margin: 10px;
+  flex: 1 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+
+  .new-tab-link {
+    margin: 5px;
+
+    .icon {
+      vertical-align: bottom;
+    }
+  }
+}
+
+
+.third {
+  flex: 1 0 auto;
 }

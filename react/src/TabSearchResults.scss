@@ -1,0 +1,28 @@
+.search-results {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  list-style: none;
+  border: 1px solid #00cc00;
+  border-radius: 5px;
+  background: #030303;
+  color: #00cc00;
+
+  .search-result {
+    padding: 3px 6px;
+
+    &:hover {
+      background: #00cc00;
+      color: #000;
+
+      a {
+        color: #030303;
+      }
+    }
+
+    a:hover {
+      text-decoration: none;
+    }
+  }
+}

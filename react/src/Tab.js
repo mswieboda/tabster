@@ -6,16 +6,16 @@ import TabLink from './TabLink';
 import './Tab.scss';
 
 function Tab() {
-  const [loaded, setLoaded] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [title, setTitle] = useState(null);
   const [artist, setArtist] = useState(null);
   const [tab, setTab] = useState(null);
+  const [loaded, setLoaded] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const params = useParams();
 
   useEffect(() => {
-    if (!params.artist || !params.title || loaded || loading) {
+    if (loading || (loaded && artist === params.artist && title === params.title)) {
       return;
     }
 
@@ -36,7 +36,7 @@ function Tab() {
       setLoading(false);
       setError(data.message);
     });
-  }, [loaded, loading, params.artist, params.title]);
+  }, [loading, loaded, artist, params.artist, title, params.title]);
 
   if (!loaded) {
     return <h3>Loading...</h3>;
