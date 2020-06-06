@@ -77,14 +77,18 @@ function NewTab() {
           {...bindTab}
           required
           placeholder={tabPlaceholder}
-          rows="30"
-          cols="120"
+          rows="21"
+          cols="90"
         >
         </textarea>
       </div>
 
       <div className="field">
-        <input type="submit" value="Save"/>
+        <input
+          className="save-button"
+          type="submit"
+          value="Save"
+        />
       </div>
     </form>
   );

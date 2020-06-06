@@ -18,6 +18,7 @@
   border-radius: 5px;
   background: #030303;
   color: #00cc00;
+  outline: none;
   padding: 3px;
 }
 
@@ -37,4 +38,32 @@
 
 .tab-input {
   display: block;
+  border: 1px solid #00cc00;
+  border-radius: 5px;
+  background: #030303;
+  color: #00cc00;
+  outline: none;
+  padding: 9px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.save-button {
+  border: 1px solid #00cc00;
+  border-radius: 5px;
+  background: #030303;
+  color: #00cc00;
+  padding: 5px 10px;
+  margin: 10px;
+  font-weight: bold;
+
+  &:hover {
+    background: #00cc00;
+    color: #030303;
+    cursor: pointer;
+  }
+
+  &:focus {
+    outline: auto;
+  }
 }
