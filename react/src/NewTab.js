@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { useInput } from './hooks/useInput';
+import { useOnBlur } from './hooks/useOnBlur';
 import { Redirect } from 'react-router-dom';
 import { toURL } from './utils/url';
 import TextInput from './TextInput';
@@ -94,6 +95,7 @@ function NewTab() {
 function ArtistInput({setArtistId, setArtist}) {
   const [artistSearch, setArtistSearch] = useState("");
   const [artists, setArtists] = useState([]);
+  const searchRef = useRef();
 
   const onSearchChange = event => {
     const search = event.target.value;
@@ -129,8 +131,10 @@ function ArtistInput({setArtistId, setArtist}) {
     }
   }
 
+  useOnBlur(searchRef, onSearchResultClick);
+
   return(
-    <div className="artist-input">
+    <div className="artist-input" ref={searchRef}>
       <SearchInput
         search={artistSearch}
         onSearchChange={onSearchChange}
@@ -155,7 +159,7 @@ function ArtistSearchResults({artists, onSearchResultClick}) {
               className="artist-result"
               onClick={() => onSearchResultClick(artist)}
             >
-              {artist.id} - {artist.name}
+              {artist.name}
             </li>
           );
         })

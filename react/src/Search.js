@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { FaSearch as SearchIcon } from 'react-icons/fa';
+import { useOnBlur } from './hooks/useOnBlur';
 import SearchInput from './SearchInput';
 import TabSearchResults from './TabSearchResults';
 
@@ -9,6 +10,7 @@ import './Search.scss';
 function Search() {
   const [search, setSearch] = useState("");
   const [tabs, setTabs] = useState([]);
+  const searchRef = useRef();
 
   const onSearchChange = (event) => {
     const searchQuery = event.target.value;
@@ -26,10 +28,12 @@ function Search() {
   const onSearchReset = () => {
     setSearch("");
     setTabs([]);
-  }
+  };
+
+  useOnBlur(searchRef, onSearchReset);
 
   return (
-    <div className="search">
+    <div className="search" ref={searchRef}>
       <SearchInput
         search={search}
         icon={<SearchIcon />}

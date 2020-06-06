@@ -8,6 +8,7 @@ function SearchInput({
   icon,
   onSearchChange,
   onSearchReset,
+  onHideSearchResults,
   placeholder = "search",
 }) {
   const styledIcon = icon && React.cloneElement(icon, { className: "icon"});
@@ -20,6 +21,7 @@ function SearchInput({
         placeholder={placeholder}
         value={search}
         onChange={onSearchChange}
+        onBlur={onHideSearchResults}
       />
       <button
         className={`search-reset ${search === "" ? "hidden" : ""}`}
