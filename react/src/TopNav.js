@@ -13,7 +13,7 @@ function TopNav() {
           <Search />
           <Link to="/tabs/new" className="new-tab-link"><AddIcon className="icon" /> New Tab</Link>
         </div>
-        <div class="app-banner">
+        <div className="app-banner">
           <Link to="/">tabster</Link>
         </div>
       </header>
