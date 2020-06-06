@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { FaSearch as SearchIcon } from 'react-icons/fa';
 import SearchInput from './SearchInput';
 import TabSearchResults from './TabSearchResults';
 
@@ -29,7 +30,13 @@ function Search() {
 
   return (
     <div className="search">
-      <SearchInput search={search} onSearchChange={onSearchChange} onSearchReset={onSearchReset} />
+      <SearchIcon className="icon" />
+      <SearchInput
+        search={search}
+        onSearchChange={onSearchChange}
+        onSearchReset={onSearchReset}
+        placeholder="Search tabs"
+      />
       <TabSearchResults tabs={tabs} onSearchReset={onSearchReset} />
     </div>
   );

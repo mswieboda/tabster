@@ -40,7 +40,7 @@ module Tabster
         artist_id: artist_id.to_i,
         tab:       tab,
       }).to_json
-    elsif artist
+    elsif !artist.blank?
       artist = Artist.create({name: artist})
 
       Tab.create({

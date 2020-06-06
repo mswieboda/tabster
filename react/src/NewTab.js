@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useInput } from './hooks/useInput';
-import TabLink from './TabLink';
+import { Redirect } from 'react-router-dom';
+import SearchInput from './SearchInput';
+
+import './NewTab.scss';
 
 function NewTab() {
   const { value: title, bind: bindTitle } = useInput('');
-  const { value: artistId, bind: bindArtistId } = useInput('');
-  const { value: artist, bind: bindArtist } = useInput('');
   const { value: tab, bind: bindTab } = useInput('');
+  const [artistId, setArtistId] = useState(null);
+  const [artist, setArtist] = useState("");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState(null);
@@ -22,8 +25,8 @@ function NewTab() {
 
     axios.post('/api/tabs', {
       title: title,
-      artist_id: artistId !== 'new' ? parseInt(artistId) : null,
-      artist: artistId === 'new' ? artist : null,
+      artist_id: artistId ? parseInt(artistId) : null,
+      artist: artist,
       tab: tab
     }).then(response => {
       const data = response.data;
@@ -39,17 +42,17 @@ function NewTab() {
     });
   }
 
+  if (!error && saved && artistName && title) {
+    return(
+      <Redirect to={`/tabs/${artistName}/${title}`} />
+    );
+  }
+
   return (
     <form onSubmit={handleSubmit}>
       <div>
         {!!error &&
           <span>Error: {error}</span>
-        }
-        {!error && saved &&
-          <span>
-            Saved!{' '}
-            <TabLink artist={artistName} title={title}>View new tab</TabLink>
-          </span>
         }
       </div>
 
@@ -60,15 +63,7 @@ function NewTab() {
 
       <div>
         <label>Artist</label>
-        <select {...bindArtistId} required>
-          <option value="">Select an Artist</option>
-          <option value="1">Charli XCX</option>
-          <option value="new">+ New Artist</option>
-        </select>
-
-        { artistId === "new" &&
-          <input type="text" {...bindArtist} required/>
-        }
+        <ArtistInput setArtistId={setArtistId} setArtist={setArtist} />
       </div>
 
       <div>
@@ -82,6 +77,76 @@ function NewTab() {
         <input type="submit" value="Save"/>
       </div>
     </form>
+  );
+}
+
+function ArtistInput({setArtistId, setArtist}) {
+  const [artistSearch, setArtistSearch] = useState("");
+  const [artists, setArtists] = useState([]);
+
+  const onSearchChange = event => {
+    const search = event.target.value;
+
+    setArtistSearch(search);
+    setArtist(search);
+
+    axios.get(`/api/artists?q=${search}`).then(response => {
+      setArtists(response.data);
+    }).catch(error => {
+      const data = error.response.data;
+      console.log(data.message);
+    });
+  };
+
+  const onSearchReset = () => {
+    setArtists([]);
+  };
+
+  const onSearchResultClick = artist => {
+    if (artist) {
+      setArtistId(artist.id);
+      setArtist(artist.name);
+      setArtistSearch(artist.name);
+    } else {
+      setArtistId(null);
+      setArtist(artistSearch);
+    }
+
+    onSearchReset();
+  }
+
+  return(
+    <div className="artist-input">
+      <SearchInput
+        search={artistSearch}
+        onSearchChange={onSearchChange}
+        onSearchReset={onSearchReset}
+        placeholder="Search artists"
+      />
+      <ArtistSearchResults artists={artists} onSearchResultClick={onSearchResultClick} />
+    </div>
+  );
+}
+
+function ArtistSearchResults({artists, onSearchResultClick}) {
+  if (!artists && !artists.length) return null;
+
+  return (
+    <ul className="artist-results">
+      {
+        artists.map((artist, index) => {
+          return (
+            <li
+              key={index}
+              className="artist-result"
+              onClick={() => onSearchResultClick(artist)}
+            >
+              {artist.id} - {artist.name}
+            </li>
+          );
+        })
+      }
+    </ul>
   );
 }
 

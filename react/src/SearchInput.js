@@ -1,19 +1,20 @@
 import React from 'react';
-import {
-  FaSearch as SearchIcon,
-  FaTimesCircle as CloseIcon,
-} from 'react-icons/fa';
+import { FaTimesCircle as CloseIcon } from 'react-icons/fa';
 
 import './SearchInput.scss';
 
-function SearchInput({search, onSearchChange, onSearchReset}) {
+function SearchInput({
+  search,
+  onSearchChange,
+  onSearchReset,
+  placeholder = "Search",
+}) {
   return (
-    <div className="search-input-container">
-      <SearchIcon className="icon" />
+    <span className="search-input-container">
       <input
         className="search-input"
         type="text"
-        placeholder="Search tabs"
+        placeholder={placeholder}
         value={search}
         onChange={onSearchChange}
       />
@@ -24,7 +25,7 @@ function SearchInput({search, onSearchChange, onSearchReset}) {
       >
         <CloseIcon />
       </button>
-    </div>
+    </span>
   );
 }
 

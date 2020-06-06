@@ -11,9 +11,11 @@ function TabSearchResults({tabs, onSearchReset}) {
       {
         tabs.map(tab => {
           return (
-            <li key={tab.id} className="search-result" onClick={onSearchReset}>
-              <TabLink artist={tab.artist} title={tab.title}>{tab.title} - {tab.artist}</TabLink>
-            </li>
+            <TabLink key={tab.id} artist={tab.artist} title={tab.title}>
+              <li className="search-result" onClick={onSearchReset}>
+                {tab.title} - {tab.artist}
+              </li>
+            </TabLink>
           );
         })
       }
