@@ -15,7 +15,20 @@ function Tab() {
   const params = useParams();
 
   useEffect(() => {
-    if (loading || error || (loaded && artist === params.artist && title === params.title)) {
+    function santizeForServerComparison(string) {
+      return string.toLowerCase().replace(/\+/g, ' ');
+    }
+
+    function sameTabLoaded(artist, title, params) {
+      if (!artist || !title) return false;
+
+      let artists = [artist, decodeURIComponent(params.artist)].map(santizeForServerComparison);
+      let titles = [title, decodeURIComponent(params.title)].map(santizeForServerComparison);
+
+      return artists[0] === artists[1] && titles[0] === titles[1];
+    }
+
+    if (loading || error || (loaded && sameTabLoaded(artist, title, params))) {
       return;
     }
 
@@ -37,7 +50,7 @@ function Tab() {
       setLoaded(true);
       setLoading(false);
     });
-  }, [loading, loaded, artist, params.artist, title, params.title, error]);
+  }, [loading, loaded, error, artist, title, params]);
 
   if (!loaded) {
     return <h3>Loading...</h3>;
