@@ -97,10 +97,10 @@ ALTER SEQUENCE public.migration_versions_id_seq OWNED BY public.migration_versio
 CREATE TABLE public.tabs (
     id integer NOT NULL,
     title character varying(254) NOT NULL,
-    tab character varying(254) NOT NULL,
+    artist_id integer,
+    tab text NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    artist_id integer
+    updated_at timestamp without time zone NOT NULL
 );
 
 
