@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { toURL } from './utils/url';
 
 function TabLink({ children, artist, title }) {
   const encodedUrl = () => {
-    return `/tabs/${encodeURIComponent(artist)}/${encodeURIComponent(title)}`;
+    return `/tabs/${toURL(artist)}/${toURL(title)}`;
   };
 
   return (

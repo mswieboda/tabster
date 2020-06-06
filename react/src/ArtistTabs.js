@@ -1,19 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import {
-  useParams,
-} from 'react-router-dom';
 import axios from 'axios';
+import {
+  useLocation,
+  useParams,
+  Link,
+} from 'react-router-dom';
+import {
+  toURL,
+  fromURL,
+} from './utils/url';
 import TabLink from './TabLink';
 
 function ArtistTabs() {
-  const [loaded, setLoaded] = useState(false);
+  const location = useLocation();
+  const params = useParams();
+  const [redirect, setRedirect] = useState(false);
+
+  useEffect(function redirectToCorrectURL() {
+    const path = `/tabs/${toURL(params.artist)}`;
+
+    if (location.pathname !== path) {
+      window.location.assign(path + location.search);
+      setRedirect(true);
+    }
+  }, [location, params]);
+
   const [loading, setLoading] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(null);
   const [tabs, setTabs] = useState([]);
-  const params = useParams();
 
   useEffect(() => {
-    if (loaded || loading) {
+    if (redirect || loading || loaded) {
       return;
     }
 
@@ -30,33 +48,40 @@ function ArtistTabs() {
       setLoading(false);
       setError(error.message);
     });
-  }, [loaded, loading, params.artist]);
+  }, [redirect, loading, loaded, params.artist]);
+
+  const header = <h3>{fromURL(params.artist)}</h3>;
+
+  if (!loaded) {
+    return(
+      <div>
+        {header}
+        <p>
+          {!loading && error ? error : "Loading..."}
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div>
-      <h3>{params.artist}</h3>
-      {loading &&
-        <p>
-          Loading...
-        </p>
+      {header}
+      {tabs && !!tabs.length &&
+        <ul>
+          {
+            tabs.map(tab => {
+              return (
+                <li key={tab.id}>
+                  <TabLink artist={tab.artist} title={tab.title} />
+                </li>
+              );
+            })
+          }
+        </ul>
       }
-      {
-        error &&
-        <p>
-          {error}
-        </p>
+      {tabs && !tabs.length &&
+        <p>No tabs found. Add a new tab <Link to="/tabs/new">here</Link>.</p>
       }
-      <ul>
-        {
-          !!tabs.length && tabs.map(tab => {
-            return (
-              <li key={tab.id}>
-                <TabLink artist={tab.artist} title={tab.title} />
-              </li>
-            );
-          })
-        }
-      </ul>
     </div>
   );
 }

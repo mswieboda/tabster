@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useInput } from './hooks/useInput';
 import { Redirect } from 'react-router-dom';
+import { toURL } from './utils/url';
 import SearchInput from './SearchInput';
 
 import './NewTab.scss';
@@ -44,7 +45,7 @@ function NewTab() {
 
   if (!error && saved && artistName && title) {
     return(
-      <Redirect to={`/tabs/${artistName}/${title}`} />
+      <Redirect to={`/tabs/${toURL(artistName)}/${toURL(title)}`} />
     );
   }
 
