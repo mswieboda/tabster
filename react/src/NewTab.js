@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useInput } from './hooks/useInput';
 import { Redirect } from 'react-router-dom';
 import { toURL } from './utils/url';
+import TextInput from './TextInput';
 import SearchInput from './SearchInput';
 
 import './NewTab.scss';
@@ -49,32 +50,40 @@ function NewTab() {
     );
   }
 
+  var tabPlaceholder = "e|-----\nB|-----\nG|-----\nD|-----\nA|-----\nE|-----\n";
+
   return (
     <form onSubmit={handleSubmit}>
-      <div>
-        {!!error &&
-          <span>Error: {error}</span>
-        }
-      </div>
+      {error &&
+        <p>
+          Error: {error}
+        </p>
+      }
 
-      <div>
+      <div className="field">
         <label>Title</label>
-        <input type="text" {...bindTitle} required/>
+        <TextInput {...bindTitle} required placeholder="Tab song title" />
       </div>
 
-      <div>
+      <div className="field">
         <label>Artist</label>
         <ArtistInput setArtistId={setArtistId} setArtist={setArtist} />
       </div>
 
-      <div>
-        <div>
-          <label>Tab</label>
-        </div>
-        <textarea {...bindTab} required></textarea>
+      <div className="field">
+        <label>Tab</label>
+        <textarea
+          className="tab-input"
+          {...bindTab}
+          required
+          placeholder={tabPlaceholder}
+          rows="30"
+          cols="120"
+        >
+        </textarea>
       </div>
 
-      <div>
+      <div className="field">
         <input type="submit" value="Save"/>
       </div>
     </form>
@@ -101,9 +110,14 @@ function ArtistInput({setArtistId, setArtist}) {
 
   const onSearchReset = () => {
     setArtists([]);
+    setArtistId(null);
+    setArtist(null);
+    setArtistSearch("");
   };
 
   const onSearchResultClick = artist => {
+    setArtists([]);
+
     if (artist) {
       setArtistId(artist.id);
       setArtist(artist.name);
@@ -112,8 +126,6 @@ function ArtistInput({setArtistId, setArtist}) {
       setArtistId(null);
       setArtist(artistSearch);
     }
-
-    onSearchReset();
   }
 
   return(
@@ -122,7 +134,7 @@ function ArtistInput({setArtistId, setArtist}) {
         search={artistSearch}
         onSearchChange={onSearchChange}
         onSearchReset={onSearchReset}
-        placeholder="Search artists"
+        placeholder="Search for artist"
       />
       <ArtistSearchResults artists={artists} onSearchResultClick={onSearchResultClick} />
     </div>

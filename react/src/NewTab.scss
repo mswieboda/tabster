@@ -1,6 +1,24 @@
+.field {
+  margin-bottom: 15px;
+
+  label {
+    margin-right: 15px;
+    vertical-align: middle;
+  }
+
+  textarea {
+
+  }
+}
+
 .artist-input {
   position: relative;
-  display: inline-block
+  display: inline-block;
+  border: 1px solid #00cc00;
+  border-radius: 5px;
+  background: #030303;
+  color: #00cc00;
+  padding: 3px;
 }
 
 .artist-results {
@@ -8,7 +26,6 @@
   padding: 0;
   margin: 0;
   list-style: none;
-  // display: block;
   width: 100%;
   background: #ff00ff;
 
@@ -18,3 +35,6 @@
   }
 }
 
+.tab-input {
+  display: block;
+}

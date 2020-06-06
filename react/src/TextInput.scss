@@ -1,0 +1,17 @@
+.wrapper {
+  display: inline-block;
+  border: 1px solid #00cc00;
+  border-radius: 5px;
+  background: #030303;
+  color: #00cc00;
+  padding: 3px;
+  padding: 5px;
+
+  input[type="text"] {
+    background: #030303;
+    border: none;
+    outline: none;
+    color: #00cc00;
+    font-weight: bold;
+  }
+}
