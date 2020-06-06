@@ -5,14 +5,24 @@ import { Redirect } from 'react-router-dom';
 import { toURL } from './utils/url';
 import TextInput from './TextInput';
 import SearchInput from './SearchInput';
+import TabEditor from './TabEditor';
 
 import './NewTab.scss';
 
+const tabPlaceholder = `
+e|-------------
+B|-------------
+G|-------------
+D|-------------
+A|-------------
+E|-------------
+`;
+
 function NewTab() {
   const { value: title, bind: bindTitle } = useInput('');
-  const { value: tab, bind: bindTab } = useInput('');
   const [artistId, setArtistId] = useState(null);
   const [artist, setArtist] = useState("");
+  const [tab, setTab] = useState(tabPlaceholder);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState(null);
@@ -50,8 +60,6 @@ function NewTab() {
     );
   }
 
-  var tabPlaceholder = "e|-----\nB|-----\nG|-----\nD|-----\nA|-----\nE|-----\n";
-
   return (
     <form onSubmit={handleSubmit} className="new-tab-form">
       {error &&
@@ -74,20 +82,7 @@ function NewTab() {
 
       <div className="field tab-field">
         <label>Tab</label>
-        {/*
-        <textarea
-          className="tab-input"
-          {...bindTab}
-          required
-          placeholder={tabPlaceholder}
-          rows="21"
-          cols="90"
-        >
-        </textarea>
-        */}
-        <div>
-          Tab here
-        </div>
+        <TabEditor tab={tab} />
       </div>
 
       <div className="field">
