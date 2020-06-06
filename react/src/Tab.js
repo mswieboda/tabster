@@ -15,7 +15,7 @@ function Tab() {
   const params = useParams();
 
   useEffect(() => {
-    if (loading || (loaded && artist === params.artist && title === params.title)) {
+    if (loading || error || (loaded && artist === params.artist && title === params.title)) {
       return;
     }
 
@@ -29,14 +29,15 @@ function Tab() {
       setTab(data.tab);
       setLoaded(true);
       setLoading(false);
-    }).catch(error => {
-      const data = error.response.data;
+    }).catch(e => {
+      const data = e.response.data;
       console.log(data.message);
+
+      setError(data.message);
       setLoaded(true);
       setLoading(false);
-      setError(data.message);
     });
-  }, [loading, loaded, artist, params.artist, title, params.title]);
+  }, [loading, loaded, artist, params.artist, title, params.title, error]);
 
   if (!loaded) {
     return <h3>Loading...</h3>;
