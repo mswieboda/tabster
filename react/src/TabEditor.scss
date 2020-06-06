@@ -1,3 +1,5 @@
+@import "./styles/_scss-vars.scss";
+
 .react-codemirror2 {
   display: flex;
   flex-direction: column;
@@ -7,5 +9,6 @@
 .CodeMirror {
   flex: 1;
   font-size: 1.25em;
-  border: 1px solid #ff00ff;
+  border: 1px solid $color-primary;
+  border-radius: 5px;
 }
