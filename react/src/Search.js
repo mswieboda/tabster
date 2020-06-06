@@ -30,12 +30,12 @@ function Search() {
 
   return (
     <div className="search">
-      <SearchIcon className="icon" />
       <SearchInput
         search={search}
+        icon={<SearchIcon />}
         onSearchChange={onSearchChange}
         onSearchReset={onSearchReset}
-        placeholder="Search tabs"
+        placeholder="search tabs"
       />
       <TabSearchResults tabs={tabs} onSearchReset={onSearchReset} />
     </div>

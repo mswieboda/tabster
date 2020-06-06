@@ -67,7 +67,7 @@ function Tab(props) {
   }, [redirect, loading, loaded, error, artist, title, params]);
 
   if (!loaded) {
-    return <h3>Loading...</h3>;
+    return <h3>loading...</h3>;
   }
 
   if (error) {
@@ -91,7 +91,7 @@ function Tab(props) {
         <Link to={`/tabs/${artist}`}>{artist}</Link>
       </p>
       <p>Tab:</p>
-      <pre>{tab}</pre>
+      <pre className="tab">{tab}</pre>
     </div>
   );
 }

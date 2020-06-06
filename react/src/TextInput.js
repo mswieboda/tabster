@@ -4,8 +4,8 @@ import './TextInput.scss';
 
 export default function TextInput(props) {
   return(
-    <span className="wrapper">
+    <div className="text-input">
       <input type="text" {...props} />
-    </span>
+    </div>
   );
 };

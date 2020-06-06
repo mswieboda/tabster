@@ -31,7 +31,7 @@ function Tabs() {
   }, [loaded, loading]);
 
   if (!loaded) {
-    return <h3>Loading...</h3>;
+    return <h3>loading...</h3>;
   }
 
   if (error) {
@@ -40,7 +40,7 @@ function Tabs() {
 
   return (
     <div>
-      <h3>Newest Tabs</h3>
+      <h3>newest tabs</h3>
       <ul className="tabs">
         {
           !!tabs.length && tabs.map(tab => {

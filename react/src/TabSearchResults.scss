@@ -1,24 +1,27 @@
+@import "./styles/_scss-vars.scss";
+
 .search-results {
   position: absolute;
   margin: 0;
   padding: 0;
   width: 100%;
   list-style: none;
-  border: 1px solid #00cc00;
+  border: 1px solid $color-primary;
   border-radius: 5px;
-  background: #030303;
-  color: #00cc00;
+  background: $color-bg;
+  color: $color-primary;
+  z-index: 999;
 
   .search-result {
     padding: 3px 6px;
     cursor: pointer;
 
     &:hover {
-      background: #00cc00;
-      color: #000;
+      background: $color-bg-highlight;
+      color: $color-primary-highlight;
 
       a {
-        color: #030303;
+        color: $color-primary-highlight;
       }
     }
 

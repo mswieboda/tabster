@@ -5,14 +5,17 @@ import './SearchInput.scss';
 
 function SearchInput({
   search,
+  icon,
   onSearchChange,
   onSearchReset,
-  placeholder = "Search",
+  placeholder = "search",
 }) {
+  const styledIcon = icon && React.cloneElement(icon, { className: "icon"});
+
   return (
-    <span className="search-input-container">
+    <div className="search-input">
+      {styledIcon}
       <input
-        className="search-input"
         type="text"
         placeholder={placeholder}
         value={search}
@@ -25,7 +28,7 @@ function SearchInput({
       >
         <CloseIcon />
       </button>
-    </span>
+    </div>
   );
 }
 

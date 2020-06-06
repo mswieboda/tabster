@@ -63,25 +63,20 @@ function NewTab() {
   return (
     <form onSubmit={handleSubmit} className="new-tab-form">
       {error &&
-        <p>
-          Error: {error}
-        </p>
+        <p>{error}</p>
       }
 
       <div className="meta-input">
         <div className="field">
-          <label>Title</label>
-          <TextInput {...bindTitle} required placeholder="Tab song title" />
+          <TextInput {...bindTitle} required placeholder="tab song title" />
         </div>
 
         <div className="field">
-          <label>Artist</label>
           <ArtistInput setArtistId={setArtistId} setArtist={setArtist} />
         </div>
       </div>
 
       <div className="field tab-field">
-        <label>Tab</label>
         <TabEditor {...bindTab} />
       </div>
 
@@ -89,7 +84,7 @@ function NewTab() {
         <input
           className="save-button"
           type="submit"
-          value="Save"
+          value="save"
         />
       </div>
     </form>
@@ -140,7 +135,7 @@ function ArtistInput({setArtistId, setArtist}) {
         search={artistSearch}
         onSearchChange={onSearchChange}
         onSearchReset={onSearchReset}
-        placeholder="Search for artist"
+        placeholder="artist of song"
       />
       <ArtistSearchResults artists={artists} onSearchResultClick={onSearchResultClick} />
     </div>
@@ -148,7 +143,7 @@ function ArtistInput({setArtistId, setArtist}) {
 }
 
 function ArtistSearchResults({artists, onSearchResultClick}) {
-  if (!artists && !artists.length) return null;
+  if (!artists || !artists.length) return null;
 
   return (
     <ul className="artist-results">

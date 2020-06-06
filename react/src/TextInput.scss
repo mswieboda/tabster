@@ -1,17 +1,23 @@
-.wrapper {
+@import "./styles/_scss-vars.scss";
+
+.text-input {
+  position: relative;
   display: inline-block;
   border: 1px solid #00cc00;
   border-radius: 5px;
-  background: #030303;
-  color: #00cc00;
-  padding: 3px;
+  background-color: $color-bg;
+  color: $color-primary;
   padding: 5px;
 
   input[type="text"] {
-    background: #030303;
+    background: $color-bg;
     border: none;
     outline: none;
-    color: #00cc00;
+    color: $color-primary;
     font-weight: bold;
+
+    &::placeholder {
+      color: $color-secondary;
+    }
   }
 }

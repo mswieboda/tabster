@@ -57,7 +57,7 @@ function ArtistTabs() {
       <div>
         {header}
         <p>
-          {!loading && error ? error : "Loading..."}
+          {!loading && error ? error : "loading..."}
         </p>
       </div>
     );
