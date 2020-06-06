@@ -2,7 +2,7 @@ import React from 'react';
 import {Controlled as CodeMirror} from 'react-codemirror2';
 
 import 'codemirror/lib/codemirror.css';
-import 'codemirror/theme/material.css';
+import './codemirror-tabster.scss';
 import './TabEditor.scss';
 
 function TabEditor({value, onChange}) {
@@ -11,8 +11,8 @@ function TabEditor({value, onChange}) {
       value={value}
       options={{
         mode: 'null',
-        theme: 'material',
-        lineNumbers: true
+        theme: 'tabster',
+        lineNumbers: false
       }}
       onBeforeChange={(editor, data, value) => onChange({ target: { value: value } })}
     />

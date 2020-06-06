@@ -1,5 +1,11 @@
-.tab-editor {
-  pre {
-    margin: 0;
-  }
+.react-codemirror2 {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.CodeMirror {
+  flex: 1;
+  font-size: 1.25em;
+  border: 1px solid #ff00ff;
 }

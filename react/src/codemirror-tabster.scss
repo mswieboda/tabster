@@ -1,0 +1,9 @@
+@import "./styles/_scss-vars.scss";
+
+.cm-s-tabster.CodeMirror { background: $color-bg; color: $color-primary; }
+.cm-s-tabster div.CodeMirror-selected { background: rgba(55, 55, 55, 0.99); }
+.cm-s-tabster .CodeMirror-line::selection, .cm-s-tabster .CodeMirror-line > span::selection, .cm-s-tabster .CodeMirror-line > span > span::selection { background: rgba(55, 55, 55, 0.99); }
+.cm-s-tabster .CodeMirror-line::-moz-selection, .cm-s-tabster .CodeMirror-line > span::-moz-selection, .cm-s-tabster .CodeMirror-line > span > span::-moz-selection { background: rgba(55, 55, 55, 0.99); }
+.cm-s-tabster .CodeMirror-gutters { background: $color-bg; border-right: 1px solid $color-secondary; }
+.cm-s-tabster .CodeMirror-linenumber { color: $color-secondary; }
+.cm-s-tabster .CodeMirror-cursor { border-left: 1px solid $color-primary; }
