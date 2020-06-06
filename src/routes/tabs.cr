@@ -5,6 +5,7 @@ module Tabster
 
   get "/api/tabs" do |env|
     query = env.params.query["q"]?
+    sort = env.params.query["sort"]?
     tabs = Tab.all
 
     if query
@@ -13,6 +14,12 @@ module Tabster
       else
         tabs = tabs.relation(:artist)
           .where { (_artists__name.ilike("%#{query}%")) | (_title.ilike("%#{query}%")) }
+      end
+    end
+
+    if sort
+      if sort == "newest"
+        tabs = tabs.order(created_at: :desc)
       end
     end
 
