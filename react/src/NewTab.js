@@ -1,11 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { useInput } from './hooks/useInput';
-import { useOnBlur } from './hooks/useOnBlur';
 import { Redirect } from 'react-router-dom';
 import { toURL } from './utils/url';
 import TextInput from './TextInput';
-import SearchInput from './SearchInput';
+import ArtistInput from './ArtistInput';
 import TabEditor from './TabEditor';
 
 import './NewTab.scss';
@@ -89,145 +88,6 @@ function NewTab() {
         />
       </div>
     </form>
-  );
-}
-
-function ArtistInput({setArtistId, setArtist}) {
-  const [artistSearch, setArtistSearch] = useState("");
-  const [artists, setArtists] = useState([]);
-  const [selectedIndex, setSelectedIndex] = useState(null);
-  const searchRef = useRef();
-
-  const onSearchChange = event => {
-    const search = event.target.value;
-
-    setArtistSearch(search);
-    setArtist(search);
-    setSelectedIndex(null);
-
-    axios.get(`/api/artists?q=${search}`).then(response => {
-      setArtists(response.data);
-    }).catch(error => {
-      const data = error.response.data;
-      console.log(data.message);
-    });
-  };
-
-  const onSearchReset = () => {
-    onSearchResultsClear();
-    setArtistId(null);
-    setArtist(null);
-    setArtistSearch("");
-  };
-
-  const onSearchResultsClear = () => {
-    setArtists([]);
-    setSelectedIndex(null);
-  };
-
-  const onSearchResultSelect = artist => {
-    if (artist) {
-      setArtistId(artist.id);
-      setArtist(artist.name);
-      setArtistSearch(artist.name);
-    } else {
-      let selectedArtist = artists[selectedIndex];
-
-      if (selectedArtist) {
-        setArtistId(selectedArtist.id);
-        setArtist(selectedArtist.name);
-        setArtistSearch(selectedArtist.name);
-      } else {
-        setArtistId(null);
-        setArtist(artistSearch);
-      }
-    }
-  };
-
-  const onSearchResultClick = artist => {
-    onSearchResultSelect(artist);
-    onSearchResultsClear();
-  }
-
-  const onKeyDown = event => {
-    if (event.keyCode === 40) {
-      // down
-      event.preventDefault();
-
-      if (!artists.length) return;
-
-      let newSelectedIndex = (!selectedIndex && selectedIndex !== 0) || selectedIndex === artists.length - 1 ? 0 : selectedIndex + 1;
-
-      setSelectedIndex(newSelectedIndex);
-
-      onSearchResultSelect(artists[newSelectedIndex]);
-    } else if (event.keyCode === 38) {
-      // up
-      event.preventDefault();
-
-      if (!artists.length) return;
-
-      let newSelectedIndex = !selectedIndex || selectedIndex === 0 ? artists.length - 1 : selectedIndex - 1;
-
-      setSelectedIndex(newSelectedIndex);
-
-      onSearchResultSelect(artists[newSelectedIndex]);
-    } else if (event.keyCode === 13) {
-      // enter/return
-      event.preventDefault();
-
-      onSearchResultClick();
-    } else if (event.keyCode === 9) {
-      // tab
-
-      if (selectedIndex || selectedIndex === 0) {
-        onSearchResultClick();
-      } else {
-        event.preventDefault();
-
-        let newSelectedIndex = selectedIndex || 0;
-
-        setSelectedIndex(newSelectedIndex);
-
-        onSearchResultSelect(artists[newSelectedIndex]);
-      }
-    }
-  };
-
-  useOnBlur(searchRef, onSearchResultsClear);
-
-  return(
-    <div className="artist-input" ref={searchRef} onKeyDown={onKeyDown}>
-      <SearchInput
-        search={artistSearch}
-        onSearchChange={onSearchChange}
-        onSearchReset={onSearchReset}
-        placeholder="artist of song"
-      />
-      <ArtistSearchResults artists={artists} onSearchResultClick={onSearchResultClick} selectedIndex={selectedIndex} />
-    </div>
-  );
-}
-
-function ArtistSearchResults({artists, selectedIndex, onSearchResultClick}) {
-  if (!artists || !artists.length) return null;
-
-  return (
-    <ul className="artist-results">
-      {
-        artists.map((artist, index) => {
-          return (
-            <li
-              key={index}
-              className={`artist-result${selectedIndex === index ? ' selected' : ''}`}
-              onClick={() => onSearchResultClick(artist)}
-            >
-              {artist.name}
-            </li>
-          );
-        })
-      }
-    </ul>
   );
 }
 

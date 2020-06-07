@@ -1,6 +1,11 @@
 @import "./styles/_scss-vars.scss";
 
-.search-results {
+.artist-input {
+  position: relative;
+  display: inline-block;
+}
+
+.artist-results {
   position: absolute;
   margin: 0;
   padding: 0;
@@ -12,9 +17,10 @@
   color: $color-primary;
   z-index: 999;
 
-  .search-result {
-    padding: 3px 6px;
+  .artist-result {
+    padding: 1px 2px;
     cursor: pointer;
+    font-weight: bold;
 
     &:hover,
     &.selected {

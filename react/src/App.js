@@ -22,9 +22,7 @@ function App() {
         <TopNav />
         <div className="page">
           <Switch>
-            <Route exact path="/">
-              <Redirect to="/tabs" />
-            </Route>
+            <Redirect exact from="/" to="/tabs" />
             <Route path="/tabs">
               <Switch>
                 <Route exact path="/tabs" component={Tabs}/>
