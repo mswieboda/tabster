@@ -20,7 +20,7 @@ E|-------------
 function NewTab() {
   const { value: title, bind: bindTitle } = useInput('');
   const [artistId, setArtistId] = useState(null);
-  const [artist, setArtist] = useState("");
+  const [newArtist, setNewArtist] = useState("");
   const { value: tab, bind: bindTab } = useInput(tabPlaceholder);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -38,7 +38,7 @@ function NewTab() {
     axios.post('/api/tabs', {
       title: title,
       artist_id: artistId ? parseInt(artistId) : null,
-      artist: artist,
+      artist: newArtist,
       tab: tab
     }).then(response => {
       const data = response.data;
@@ -68,11 +68,20 @@ function NewTab() {
 
       <div className="meta-input">
         <div className="field">
-          <TextInput {...bindTitle} required placeholder="tab song title" />
+          <TextInput
+            required
+            placeholder="tab song title"
+            {...bindTitle}
+          />
         </div>
 
         <div className="field">
-          <ArtistInput setArtistId={setArtistId} setArtist={setArtist} />
+          <ArtistInput
+            required
+            placeholder="artist of song"
+            setArtistId={setArtistId}
+            setNewArtist={setNewArtist}
+          />
         </div>
       </div>
 

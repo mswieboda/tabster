@@ -1,27 +1,17 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { FaSearch as SearchIcon } from 'react-icons/fa';
-import { useOnBlur } from './hooks/useOnBlur';
-import { useResultSelect } from './hooks/useResultSelect';
 import { toURL } from './utils/url';
-import SearchInput from './SearchInput';
-import TabSearchResults from './TabSearchResults';
+import ComboBox from './ComboBox';
+import TabLink from './TabLink';
 
 import './Search.scss';
 
 function Search() {
-  const [search, setSearch] = useState("");
-  const [selectedIndex, setSelectedIndex] = useState(null);
   const [tabs, setTabs] = useState([]);
-  const searchRef = useRef();
 
-  const onSearchChange = (event) => {
-    const searchQuery = event.target.value;
-
-    setSearch(searchQuery);
-    setSelectedIndex(null);
-
-    axios.get(`/api/tabs?q=${searchQuery}`).then(response => {
+  const onSearchChange = value => {
+    axios.get(`/api/tabs?q=${value}`).then(response => {
       setTabs(response.data);
     }).catch(error => {
       const data = error.response.data;
@@ -29,19 +19,7 @@ function Search() {
     });
   };
 
-  const onSearchReset = () => {
-    setSearch("");
-    onSearchResultsClear();
-  };
-
-  const onSearchResultsClear = () => {
-    setTabs([]);
-    setSelectedIndex(null);
-  };
-
-  const onSearchResultClick = () => {
-    let tab = tabs[selectedIndex];
-
+  const onSearchResultSelect = tab => {
     if (tab) {
       // TODO: use returning/rendering a  Redirect
       //       for some reason when it does redirect
@@ -50,26 +28,24 @@ function Search() {
     }
   };
 
-  const { onKeyDown } = useResultSelect({
-    results: tabs,
-    selectedIndex: selectedIndex,
-    setSelectedIndex: setSelectedIndex,
-    onResultClick: onSearchResultClick,
-    onResultsClear: onSearchResultsClear,
-  });
-
-  useOnBlur(searchRef, onSearchReset);
-
   return (
-    <div className="search" ref={searchRef} onKeyDown={onKeyDown}>
-      <SearchInput
-        search={search}
+    <div className="search">
+      <ComboBox
         icon={<SearchIcon />}
-        onSearchChange={onSearchChange}
-        onSearchReset={onSearchReset}
         placeholder="search tabs"
+        items={tabs}
+        renderItem={(tab, index, highlighted) =>
+          <TabLink artist={tab.artist} title={tab.title}>
+            <div
+              className={`search-result${highlighted ? ' selected' : ''}`}
+            >
+              {tab.title} - {tab.artist}
+            </div>
+          </TabLink>
+        }
+        onChange={onSearchChange}
+        onSelect={onSearchResultSelect}
       />
-      <TabSearchResults tabs={tabs} onSearchReset={onSearchReset} selectedIndex={selectedIndex} />
     </div>
   );
 }

@@ -1,6 +1,10 @@
 @import "./styles/_scss-vars.scss";
 
-.search-input {
+.combo-box {
+  position: relative;
+}
+
+.combo-box-input-container {
   display: inline-block;
   border: 1px solid #00cc00;
   border-radius: 5px;
@@ -25,7 +29,7 @@
     }
   }
 
-  .search-reset {
+  .combo-box-clear {
     vertical-align: middle;
     margin: 0;
     padding: 0;
@@ -38,5 +42,37 @@
     &.hidden {
       visibility: hidden;
     }
+  }
+}
+
+.combo-box-items {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  list-style: none;
+  border: 1px solid $color-primary;
+  border-radius: 5px;
+  background: $color-bg;
+  color: $color-primary;
+  z-index: 999;
+}
+
+.combo-box-item {
+  padding: 3px 6px;
+  cursor: pointer;
+
+  &:hover,
+  &.highlighted {
+    background: $color-bg-highlight;
+    color: $color-primary-highlight;
+
+    a {
+      color: $color-primary-highlight;
+    }
+  }
+
+  a:hover {
+    text-decoration: none;
   }
 }
