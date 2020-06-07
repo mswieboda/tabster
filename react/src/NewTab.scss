@@ -37,7 +37,8 @@
     cursor: pointer;
     font-weight: bold;
 
-    &:hover {
+    &:hover,
+    &.selected {
       background: $color-bg-highlight;
       color: $color-primary-highlight;
 
