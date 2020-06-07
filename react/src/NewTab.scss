@@ -32,23 +32,3 @@
   font-weight: bold;
   font-size: 16px;
 }
-
-.save-button {
-  border: 1px solid #00cc00;
-  border-radius: 5px;
-  background-color: $color-bg;
-  color: $color-primary;
-  padding: 5px 10px;
-  margin: 10px;
-  font-weight: bold;
-
-  &:hover {
-    background-color: $color-bg;
-    color: $color-primary;
-    cursor: pointer;
-  }
-
-  &:focus {
-    outline: auto;
-  }
-}

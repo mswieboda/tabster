@@ -82,7 +82,7 @@ function NewTab() {
 
       <div className="field">
         <input
-          className="save-button"
+          className="btn-primary"
           type="submit"
           value="save"
         />

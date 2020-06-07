@@ -16,9 +16,10 @@ function TopNav() {
         <div className="app-banner">
           <Link to="/">tabster</Link>
         </div>
+        <div>
+          <button className="btn-primary">Login</button>
+        </div>
       </header>
-
-
     </div>
   );
 }
