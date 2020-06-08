@@ -26,8 +26,13 @@ const signUp = ({
   });
 };
 
+const signOut = () => {
+  return axios.delete('/api/sign_out');
+};
+
 export {
   getUser,
   signIn,
   signUp,
+  signOut,
 };

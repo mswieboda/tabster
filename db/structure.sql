@@ -129,6 +129,44 @@ ALTER SEQUENCE public.tabs_id_seq OWNED BY public.tabs.id;
 
 
 --
+-- Name: users; Type: TABLE; Schema: public; Owner: tabster
+--
+
+CREATE TABLE public.users (
+    id integer NOT NULL,
+    email character varying(254) NOT NULL,
+    username character varying(254) NOT NULL,
+    password character varying(254) NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.users OWNER TO tabster;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: tabster
+--
+
+CREATE SEQUENCE public.users_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_id_seq OWNER TO tabster;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: tabster
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
 -- Name: artists id; Type: DEFAULT; Schema: public; Owner: tabster
 --
 
@@ -147,6 +185,13 @@ ALTER TABLE ONLY public.migration_versions ALTER COLUMN id SET DEFAULT nextval('
 --
 
 ALTER TABLE ONLY public.tabs ALTER COLUMN id SET DEFAULT nextval('public.tabs_id_seq'::regclass);
+
+
+--
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: tabster
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
 
 
 --
@@ -171,6 +216,14 @@ ALTER TABLE ONLY public.migration_versions
 
 ALTER TABLE ONLY public.tabs
     ADD CONSTRAINT tabs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: tabster
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
 
 
 --

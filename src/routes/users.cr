@@ -1,6 +1,28 @@
 module Tabster
+  before_all "/api/user" { |env| set_content_type_json(env) }
   before_all "/api/sign_up" { |env| set_content_type_json(env) }
   before_all "/api/sign_in" { |env| set_content_type_json(env) }
+  before_all "/api/sign_out" { |env| set_content_type_json(env) }
+
+  get "/api/user" do |env|
+    auth_cookie = env.request.cookies["auth"]?
+
+    if auth_cookie
+      user = User.get?(auth_cookie.value)
+
+      if user
+        sign_in(env, user)
+
+        user.to_json
+      else
+        response = {status_code: 401, message: "Invalid credentials"}
+        halt env, status_code: 401, response: response
+      end
+    else
+      response = {status_code: 401, message: "Not signed in"}
+      halt env, status_code: 401, response: response
+    end
+  end
 
   post "/api/sign_up" do |env|
     email = env.params.json["email"].as(String | Nil)
@@ -8,8 +30,15 @@ module Tabster
     password = env.params.json["password"].as(String | Nil)
 
     if email && username && password
-      "New user created!"
-      {email: email, username: username}.to_json
+      user = User.create({
+        email:    email,
+        username: username,
+        password: password,
+      })
+
+      sign_in(env, user)
+
+      user.to_json
     else
       response = {status_code: 422, message: "Email, Username, and Password required"}.to_json
       halt env, status_code: 422, response: response
@@ -21,14 +50,47 @@ module Tabster
     password = env.params.json["password"].as(String | Nil)
 
     if username_or_email && password
-      {email: username_or_email, username: username_or_email}.to_json
+      user = User.all.where { (_username == username_or_email) |
+        (_email == username_or_email) &
+          (_password == password) }.first
+
+      if user
+        sign_in(env, user)
+
+        user.to_json
+      else
+        response = {status_code: 401, message: "Invalid"}
+        halt env, status_code: 401, response: response
+      end
     else
       response = {status_code: 422, message: "Email/Username, and Password required"}.to_json
       halt env, status_code: 422, response: response
     end
   end
 
-  get "/api/user" do |env|
-    {email: "user@email.com", username: "username"}.to_json
+  delete "/api/sign_out" do |env|
+    sign_out(env)
+    {status_code: 200}.to_json
+  end
+
+  def self.sign_in(env, user)
+    # TODO: add `secure: true` after HTTPS implemented
+    auth_cookie = HTTP::Cookie.new(
+      name: "auth",
+      value: user.auth_token,
+      http_only: true,
+    )
+
+    env.response.cookies << auth_cookie
+  end
+
+  def self.sign_out(env)
+    auth_cookie = env.request.cookies["auth"]?
+
+    if auth_cookie
+      auth_cookie.expires = Time.unix(0)
+
+      env.response.cookies << auth_cookie
+    end
   end
 end

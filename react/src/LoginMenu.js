@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { UserContext } from './contexts/UserContext';
 import { Link } from 'react-router-dom';
+import { signOut } from './apis/user';
 import {
   FaBars as MenuIcon,
 } from 'react-icons/fa';
@@ -15,7 +16,22 @@ function LoginMenu() {
     event.preventDefault();
 
     setMenuOpen(!menuOpen);
-  }
+  };
+
+  const onSignOut = event => {
+    event.preventDefault();
+
+    signOut().then(response => {
+      const data = response.data;
+
+      if (data) {
+        userDispatch({ type: 'logout'});
+      }
+    }).catch(error => {
+      const data = error.response.data;
+      console.log(data.message);
+    });
+  };
 
   if (!user || !user.isLoggedIn) {
     return (
@@ -54,7 +70,7 @@ function LoginMenu() {
           </div>
           <button
             className="btn-primary"
-            onClick={() => userDispatch({ type: 'logout'})}
+            onClick={onSignOut}
           >
             sign out
           </button>
