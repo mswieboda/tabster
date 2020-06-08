@@ -32,6 +32,7 @@ function SignIn() {
         <TextInput
           type="text"
           name="username"
+          required
           placeholder="username or email"
         />
       </div>
@@ -40,6 +41,7 @@ function SignIn() {
         <TextInput
           type="password"
           name="password"
+          required
           placeholder="password"
         />
       </div>

@@ -1,7 +1,5 @@
 module Tabster
-  before_all "/api/tabs" { |env| set_content_type_json(env) }
-  before_all "/api/tabs/:artist" { |env| set_content_type_json(env) }
-  before_all "/api/tabs/:artist/:title" { |env| set_content_type_json(env) }
+  before_all { |env| set_content_type_json(env) }
 
   get "/api/tabs" do |env|
     query = env.params.query["q"]?

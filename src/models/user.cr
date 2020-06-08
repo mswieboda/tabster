@@ -1,13 +1,19 @@
 require "jwt"
+require "jennifer/model/authentication"
 
 class User < Jennifer::Model::Base
+  include Jennifer::Model::Authentication
+
+  with_authentication
   with_timestamps
 
   mapping(
     id: Primary32,
     email: String,
     username: String,
-    password: String,
+    password_digest: {type: String, default: ""},
+    password: Password,
+    password_confirmation: {type: String?, virtual: true},
     created_at: Time?,
     updated_at: Time?,
   )

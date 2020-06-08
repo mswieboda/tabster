@@ -136,7 +136,7 @@ CREATE TABLE public.users (
     id integer NOT NULL,
     email character varying(254) NOT NULL,
     username character varying(254) NOT NULL,
-    password character varying(254) NOT NULL,
+    password_digest character varying(254) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );

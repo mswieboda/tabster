@@ -1,29 +1,11 @@
-require "crypto/bcrypt/password"
-
 module Tabster
-  before_all "/api/user" { |env| set_content_type_json(env) }
-  before_all "/api/sign_up" { |env| set_content_type_json(env) }
-  before_all "/api/sign_in" { |env| set_content_type_json(env) }
-  before_all "/api/sign_out" { |env| set_content_type_json(env) }
+  before_all { |env| set_content_type_json(env) }
 
   get "/api/user" do |env|
-    auth_cookie = env.request.cookies["auth"]?
-
-    if auth_cookie
-      user = User.get?(auth_cookie.value)
-
-      if user
-        sign_in(env, user)
-
-        user.to_json
-      else
-        response = {status_code: 401, message: "Invalid credentials"}
-        halt env, status_code: 401, response: response
-      end
-    else
-      response = {status_code: 401, message: "Not signed in"}
-      halt env, status_code: 401, response: response
-    end
+    current_user(env).to_json
+  rescue ex : ServerError
+    options = halt_options(ex)
+    halt env, status_code: options[:status_code], response: options[:response]
   end
 
   post "/api/sign_up" do |env|
@@ -32,24 +14,24 @@ module Tabster
     password = env.params.json["password"].as(String | Nil)
 
     if email && username && password
-      # TODO: switch to Jennifer::Model::Authentication
-      encrypted_password = Crypto::Bcrypt::Password.create(password).to_s
-      user = User.create!({
+      user = User.build({
         email:    email,
         username: username,
-        password: encrypted_password,
       })
+      user.password = password
+      user.save!
 
       sign_in(env, user)
 
       user.to_json
     else
-      response = {status_code: 422, message: "Email, Username, and Password required"}.to_json
-      halt env, status_code: 422, response: response
+      raise ValidationError.new("Email, Username, and Password required")
     end
   rescue ex : Jennifer::RecordInvalid
-    response = {status_code: 422, message: ex.message}.to_json
-    halt env, status_code: 422, response: response
+    raise ValidationError.new(ex.message)
+  rescue ex : ServerError
+    options = halt_options(ex)
+    halt env, status_code: options[:status_code], response: options[:response]
   end
 
   post "/api/sign_in" do |env|
@@ -61,22 +43,25 @@ module Tabster
         .where { or(_username == username_or_email, _email == username_or_email) }
         .first
 
-      # TODO: switch to Jennifer::Model::Authentication
-      if user && Crypto::Bcrypt::Password.new(user.password).verify(password)
-        sign_in(env, user)
+      if user
+        begin
+          authorized = user.authenticate(password)
+        rescue ex : Crypto::Bcrypt::Error
+          raise AuthError.new("Invalid credentials")
+        end
 
-        user.to_json
-      else
-        response = {status_code: 401, message: "Invalid"}.to_json
-        halt env, status_code: 401, response: response
+        if authorized
+          sign_in(env, user)
+
+          next user.to_json
+        end
       end
-    else
-      response = {status_code: 401, message: "Invalid"}.to_json
-      halt env, status_code: 422, response: response
     end
-  rescue ex : Crypto::Bcrypt::Error
-    response = {status_code: 401, message: "Invalid"}.to_json
-    halt env, status_code: 422, response: response
+
+    raise AuthError.new("Invalid credentials")
+  rescue ex : ServerError
+    options = halt_options(ex)
+    halt env, status_code: options[:status_code], response: options[:response]
   end
 
   delete "/api/sign_out" do |env|
@@ -102,6 +87,56 @@ module Tabster
       auth_cookie.expires = Time.unix(0)
 
       env.response.cookies << auth_cookie
+    end
+  end
+
+  def self.current_user(env)
+    auth_cookie = env.request.cookies["auth"]?
+
+    if auth_cookie
+      user = User.get?(auth_cookie.value)
+
+      if user
+        sign_in(env, user)
+
+        user
+      else
+        raise AuthError.new("Invalid credentials")
+      end
+    else
+      raise AuthError.new("Not authorized")
+    end
+  end
+
+  def self.halt_options(status_code = 200, message = nil)
+    response = {status_code: status_code, message: message}.to_json
+    {status_code: status_code, response: response}
+  end
+
+  def self.halt_options(ex : ServerError)
+    halt_options(status_code: ex.status_code, message: ex.message)
+  end
+
+  class ServerError < Exception
+    getter status_code
+
+    def initialize(message)
+      super(message)
+      @status_code = 500
+    end
+  end
+
+  class AuthError < ServerError
+    def initialize(message)
+      super(message)
+      @status_code = 401
+    end
+  end
+
+  class ValidationError < ServerError
+    def initialize(message)
+      super(message)
+      @status_code = 422
     end
   end
 end
