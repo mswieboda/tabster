@@ -6,23 +6,23 @@
   min-height: 100vh;
   background-color: $color-bg;
   color: $color-secondary;
+}
 
-  a {
-    color: $color-primary;
-    text-decoration: none;
-    font-weight: bold;
-  }
+.page {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin: 5px;
+}
 
-  a:hover {
-    text-decoration: underline;
-  }
+a {
+  color: $color-primary;
+  text-decoration: none;
+  font-weight: bold;
+}
 
-  .page {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    margin: 5px;
-  }
+a:hover {
+  text-decoration: underline;
 }
 
 //
@@ -34,8 +34,8 @@
   background-color: $color-bg;
   color: $color-primary;
   padding: 5px 10px;
-  margin: 10px;
   font-weight: bold;
+  font-size: 1em;
 
   &:hover {
     background-color: $color-bg-highlight;

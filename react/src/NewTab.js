@@ -85,7 +85,7 @@ function NewTab() {
         </div>
       </div>
 
-      <div className="field tab-field">
+      <div className="field field-tab">
         <TabEditor {...bindTab} />
       </div>
 
