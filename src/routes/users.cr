@@ -1,3 +1,5 @@
+require "crypto/bcrypt/password"
+
 module Tabster
   before_all "/api/user" { |env| set_content_type_json(env) }
   before_all "/api/sign_up" { |env| set_content_type_json(env) }
@@ -30,10 +32,12 @@ module Tabster
     password = env.params.json["password"].as(String | Nil)
 
     if email && username && password
-      user = User.create({
+      # TODO: switch to Jennifer::Model::Authentication
+      encrypted_password = Crypto::Bcrypt::Password.create(password).to_s
+      user = User.create!({
         email:    email,
         username: username,
-        password: password,
+        password: encrypted_password,
       })
 
       sign_in(env, user)
@@ -43,6 +47,9 @@ module Tabster
       response = {status_code: 422, message: "Email, Username, and Password required"}.to_json
       halt env, status_code: 422, response: response
     end
+  rescue ex : Jennifer::RecordInvalid
+    response = {status_code: 422, message: ex.message}.to_json
+    halt env, status_code: 422, response: response
   end
 
   post "/api/sign_in" do |env|
@@ -50,22 +57,26 @@ module Tabster
     password = env.params.json["password"].as(String | Nil)
 
     if username_or_email && password
-      user = User.all.where { (_username == username_or_email) |
-        (_email == username_or_email) &
-          (_password == password) }.first
+      user = User.all
+        .where { or(_username == username_or_email, _email == username_or_email) }
+        .first
 
-      if user
+      # TODO: switch to Jennifer::Model::Authentication
+      if user && Crypto::Bcrypt::Password.new(user.password).verify(password)
         sign_in(env, user)
 
         user.to_json
       else
-        response = {status_code: 401, message: "Invalid"}
+        response = {status_code: 401, message: "Invalid"}.to_json
         halt env, status_code: 401, response: response
       end
     else
-      response = {status_code: 422, message: "Email/Username, and Password required"}.to_json
+      response = {status_code: 401, message: "Invalid"}.to_json
       halt env, status_code: 422, response: response
     end
+  rescue ex : Crypto::Bcrypt::Error
+    response = {status_code: 401, message: "Invalid"}.to_json
+    halt env, status_code: 422, response: response
   end
 
   delete "/api/sign_out" do |env|

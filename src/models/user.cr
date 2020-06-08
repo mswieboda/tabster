@@ -12,6 +12,8 @@ class User < Jennifer::Model::Base
     updated_at: Time?,
   )
 
+  validates_uniqueness :email, :username
+
   def auth_token
     payload = {"id" => id, "email" => email, "username" => username}
     JWT.encode(payload, "SecretKey", JWT::Algorithm::HS256)
