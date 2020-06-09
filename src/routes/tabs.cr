@@ -1,5 +1,40 @@
 module Tabster
-  before_all { |env| set_content_type_json(env) }
+  get "/tabs/:artist" do |env|
+    name = env.params.url["artist"]
+    artist = Artist.all
+      .where { lower(_name) == name.gsub('+', ' ').downcase }
+      .limit(1)
+      .first
+
+    if artist && name != artist.name_escaped
+      env.redirect "/tabs/#{artist.name_escaped}"
+    else
+      serve_react(env)
+    end
+  end
+
+  get "/tabs/:artist/:title" do |env|
+    name = env.params.url["artist"]
+    title = env.params.url["title"]
+
+    tab = Tab.all
+      .relation(:artist)
+      .where { (lower(_artists__name) == name.gsub('+', ' ').downcase) & (lower(_title) == title.gsub('+', ' ').downcase) }
+      .limit(1)
+      .first
+
+    if tab && (name != tab.artist!.name_escaped || title != tab.title_escaped)
+      env.redirect "/tabs/#{tab.artist!.name_escaped}/#{tab.title_escaped}"
+    else
+      serve_react(env)
+    end
+  end
+
+  get "/tabs" do |env|
+    serve_react(env)
+  end
+
+  before_all "/api/tabs*" { |env| set_content_type_json(env) }
 
   get "/api/tabs" do |env|
     query = env.params.query["q"]?
@@ -54,18 +89,18 @@ module Tabster
   get "/api/tabs/:artist" do |env|
     artist = env.params.url["artist"].gsub('+', ' ')
     tabs = Tab.all.relation(:artist)
-      .where { lower(_artists__name) == artist.downcase }
+      .where { _artists__name == artist }
       .limit(25)
 
     tabs.to_a.to_json
   end
 
   get "/api/tabs/:artist/:title" do |env|
-    # Fix until Kemal supports + as whitespace in params
     artist = env.params.url["artist"].gsub('+', ' ')
     title = env.params.url["title"].gsub('+', ' ')
-    tab = Tab.all.relation(:artist)
-      .where { (lower(_artists__name) == artist.downcase) & (lower(_title) == title.downcase) }
+    tab = Tab.all
+      .relation(:artist)
+      .where { (_artists__name == artist) & (_title == title) }
       .limit(1)
       .first
 

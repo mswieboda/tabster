@@ -20,4 +20,8 @@ class Tab < Jennifer::Model::Base
       json.field "tab", tab
     end
   end
+
+  def title_escaped
+    URI.encode_www_form(title)
+  end
 end
