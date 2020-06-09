@@ -1,6 +1,19 @@
 module Tabster
-  before_all "/api/artists" { |env| set_content_type_json(env) }
-  before_all "/api/artists/:artist" { |env| set_content_type_json(env) }
+  get "/tabs/:artist" do |env|
+    name = env.params.url["artist"]
+    artist = Artist.all
+      .where { lower(_name) == name.gsub('+', ' ').downcase }
+      .limit(1)
+      .first
+
+    if artist && name != artist.name_escaped
+      env.redirect "/tabs/#{artist.name_escaped}"
+    else
+      serve_react(env)
+    end
+  end
+
+  before_all "/api/artists*" { |env| set_content_type_json(env) }
 
   get "/api/artists" do |env|
     query = env.params.query["q"]?
