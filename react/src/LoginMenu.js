@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { UserContext } from './contexts/UserContext';
+import useRedirect from './hooks/useRedirect';
 import { Link } from 'react-router-dom';
 import { signOut } from './apis/user';
 import {
@@ -10,6 +11,7 @@ import './LoginMenu.scss';
 
 function LoginMenu() {
   const { user, dispatch: userDispatch } = useContext(UserContext);
+  const { redirect, setRedirect, renderRedirect } = useRedirect(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const onMenuClick = event => {
@@ -26,12 +28,15 @@ function LoginMenu() {
 
       if (data) {
         userDispatch({ type: 'logout'});
+        setRedirect('/');
       }
     }).catch(error => {
       const data = error.response.data;
       console.log(data.message);
     });
   };
+
+  if (redirect) return renderRedirect();
 
   if (!user || !user.isLoggedIn) {
     return (

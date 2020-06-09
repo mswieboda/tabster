@@ -1,39 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {
-  useLocation,
-  useParams,
-  Link,
-} from 'react-router-dom';
-import {
-  toURL,
-  fromURL,
-} from './utils/url';
+import { useParams, Link } from 'react-router-dom';
+import useRedirectToCorrectPath from './hooks/useRedirectToCorrectPath';
+import { toURL, fromURL } from './utils/url';
 import TabLink from './TabLink';
 
 function ArtistTabs() {
-  const location = useLocation();
   const params = useParams();
-  const [redirect, setRedirect] = useState(false);
-
-  useEffect(function redirectToCorrectURL() {
-    const path = `/tabs/${toURL(params.artist)}`;
-
-    if (location.pathname !== path) {
-      window.location.assign(path + location.search);
-      setRedirect(true);
-    }
-  }, [location, params]);
-
+  const isCorrectPath = useRedirectToCorrectPath(`/tabs/${toURL(params.artist)}`);
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const [error, setError] = useState(null);
   const [tabs, setTabs] = useState([]);
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    if (redirect || loading || loaded) {
-      return;
-    }
+  useEffect(function loadArtistTabs() {
+    if (!isCorrectPath || loading || loaded) return;
 
     setLoading(true);
 
@@ -48,7 +29,7 @@ function ArtistTabs() {
       setLoading(false);
       setError(error.message);
     });
-  }, [redirect, loading, loaded, params.artist]);
+  }, [isCorrectPath, loading, loaded, params.artist]);
 
   const header = <h3>{fromURL(params.artist)}</h3>;
 
