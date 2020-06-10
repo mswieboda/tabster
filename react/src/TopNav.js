@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Search from './Search';
-import LoginMenu from './LoginMenu';
+import { UserContext } from './contexts/UserContext';
+import SignedInMenu from './SignedInMenu';
+import SignInUp from './SignInUp';
 import {
   FaPlusCircle as AddIcon,
 } from 'react-icons/fa';
@@ -9,6 +11,8 @@ import {
 import './TopNav.scss';
 
 function TopNav() {
+  const { user } = useContext(UserContext);
+
   return (
     <header className="header">
       <div className="app-banner">
@@ -28,7 +32,7 @@ function TopNav() {
       <div className="gap">
       </div>
 
-      <LoginMenu />
+      {user && user.isLoggedIn ? <SignedInMenu /> : <SignInUp />}
     </header>
   );
 }

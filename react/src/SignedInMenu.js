@@ -1,16 +1,18 @@
-import React, { useContext, useState } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import React, { useContext, useRef, useState } from 'react';
+import { withRouter } from 'react-router-dom';
 import { UserContext } from './contexts/UserContext';
+import { useOnBlur } from './hooks/useOnBlur';
 import { signOut } from './apis/user';
 import {
   FaBars as MenuIcon,
 } from 'react-icons/fa';
 
-import './LoginMenu.scss';
+import './SignedInMenu.scss';
 
-function LoginMenu({history}) {
+function SignedInMenu({history}) {
   const { user, dispatch: userDispatch } = useContext(UserContext);
   const [menuOpen, setMenuOpen] = useState(false);
+  const ref = useRef();
 
   const onMenuClick = event => {
     event.preventDefault();
@@ -25,6 +27,7 @@ function LoginMenu({history}) {
       const data = response.data;
 
       if (data) {
+        setMenuOpen(false);
         userDispatch({ type: 'logout'});
         history.push('/');
       }
@@ -34,27 +37,10 @@ function LoginMenu({history}) {
     });
   };
 
-  if (!user || !user.isLoggedIn) {
-    return (
-      <div>
-        <Link
-          className="btn-primary"
-          to="/sign-in"
-        >
-          sign in
-        </Link>
-        <Link
-          className="btn-primary"
-          to="/sign-up"
-        >
-          sign up
-        </Link>
-      </div>
-    );
-  }
+  useOnBlur(ref, () => setMenuOpen(false));
 
   return (
-    <div>
+    <div ref={ref}>
       <button
         className="btn-primary"
         onClick={onMenuClick}
@@ -81,4 +67,4 @@ function LoginMenu({history}) {
   );
 }
 
-export default withRouter(LoginMenu);
+export default withRouter(SignedInMenu);
