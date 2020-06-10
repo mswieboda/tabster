@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
+import { Link, withRouter } from 'react-router-dom';
 import { UserContext } from './contexts/UserContext';
-import useRedirect from './hooks/useRedirect';
-import { Link } from 'react-router-dom';
 import { signOut } from './apis/user';
 import {
   FaBars as MenuIcon,
@@ -9,9 +8,8 @@ import {
 
 import './LoginMenu.scss';
 
-function LoginMenu() {
+function LoginMenu({history}) {
   const { user, dispatch: userDispatch } = useContext(UserContext);
-  const { redirect, setRedirect, renderRedirect } = useRedirect(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const onMenuClick = event => {
@@ -28,15 +26,13 @@ function LoginMenu() {
 
       if (data) {
         userDispatch({ type: 'logout'});
-        setRedirect('/');
+        history.push('/');
       }
     }).catch(error => {
       const data = error.response.data;
       console.log(data.message);
     });
   };
-
-  if (redirect) return renderRedirect();
 
   if (!user || !user.isLoggedIn) {
     return (
@@ -85,4 +81,4 @@ function LoginMenu() {
   );
 }
 
-export default LoginMenu;
+export default withRouter(LoginMenu);

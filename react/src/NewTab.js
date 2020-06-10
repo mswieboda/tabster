@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useInput } from './hooks/useInput';
-import { Redirect } from 'react-router-dom';
 import { toURL } from './utils/url';
 import TextInput from './TextInput';
 import ArtistInput from './ArtistInput';
@@ -17,15 +16,13 @@ A|-------------
 E|-------------
 `;
 
-function NewTab() {
+function NewTab({history}) {
   const { value: title, bind: bindTitle } = useInput('');
   const [artistId, setArtistId] = useState(null);
   const [newArtist, setNewArtist] = useState("");
   const { value: tab, bind: bindTab } = useInput(tabPlaceholder);
   const [saving, setSaving] = useState(false);
-  const [saved, setSaved] = useState(false);
   const [error, setError] = useState(null);
-  const [artistName, setArtistName] = useState(null);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -43,21 +40,12 @@ function NewTab() {
     }).then(response => {
       const data = response.data;
 
-      setArtistName(data.artist);
-      setSaving(false);
-      setSaved(true);
+      history.push(`/tabs/${toURL(data.artist)}/${toURL(title)}`);
     }).catch(error => {
       console.log(error);
       setSaving(false);
-      setSaved(false);
       setError(error.message);
     });
-  }
-
-  if (!error && saved && artistName && title) {
-    return(
-      <Redirect to={`/tabs/${toURL(artistName)}/${toURL(title)}`} />
-    );
   }
 
   return (

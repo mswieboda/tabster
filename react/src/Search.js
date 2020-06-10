@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { withRouter } from 'react-router-dom';
 import { FaSearch as SearchIcon } from 'react-icons/fa';
 import { toURL } from './utils/url';
 import ComboBox from './ComboBox';
@@ -7,7 +8,7 @@ import TabLink from './TabLink';
 
 import './Search.scss';
 
-function Search() {
+function Search({history}) {
   const [tabs, setTabs] = useState([]);
 
   const onSearchChange = value => {
@@ -21,10 +22,7 @@ function Search() {
 
   const onSearchResultSelect = tab => {
     if (tab) {
-      // TODO: use returning/rendering a  Redirect
-      //       for some reason when it does redirect
-      //       this Search component is no longer rendered
-      window.location.assign(`/tabs/${toURL(tab.artist)}/${toURL(tab.title)}`);
+      history.push(`/tabs/${toURL(tab.artist)}/${toURL(tab.title)}`);
     }
   };
 
@@ -50,4 +48,4 @@ function Search() {
   );
 }
 
-export default Search;
+export default withRouter(Search);

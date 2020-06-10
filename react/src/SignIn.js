@@ -1,12 +1,10 @@
 import React, { useContext } from 'react';
 import { UserContext } from './contexts/UserContext';
-import useRedirect from './hooks/useRedirect';
 import { signIn } from './apis/user';
 import TextInput from './TextInput';
 
-function SignIn() {
+function SignIn({history}) {
   const { dispatch: userDispatch } = useContext(UserContext);
-  const { redirect, setRedirect, renderRedirect } = useRedirect(null);
 
   const onSubmit = event => {
     const formElements = event.target.elements;
@@ -21,15 +19,13 @@ function SignIn() {
 
       if (data) {
         userDispatch({ type: "login", ...data });
-        setRedirect("/");
+        history.push("/tabs");
       }
     }).catch(error => {
       const data = error.response.data;
       console.log(data.message);
     });
   };
-
-  if (redirect) return renderRedirect();
 
   return (
     <form onSubmit={onSubmit}>
