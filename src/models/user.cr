@@ -1,6 +1,6 @@
 require "jwt"
 require "jennifer/model/authentication"
-require "../mailers/confirmation_mailer"
+require "../mailers/confirmation"
 
 class Tabster::User < Jennifer::Model::Base
   table_name :users
@@ -56,14 +56,9 @@ class Tabster::User < Jennifer::Model::Base
   end
 
   def send_email_confirmation(env)
-    # TODO: disabled for now until turned off for development environment
-    return if email != "mswiebod@gmail.com"
-
     app_root = env.request.host_with_port
 
-    puts ">>> sending email confirmation to: #{email}"
-
-    ConfirmationMailer.new(
+    Mailers::Confirmation.new(
       name: username,
       email: email,
       confirm_uri: "#{app_root}/#{email_confirm_uri}"
