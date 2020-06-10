@@ -6,9 +6,6 @@ module Tabster
 
   get "/api/user" do |env|
     current_user(env).to_json
-  rescue ex : ServerError
-    options = halt_options(ex)
-    halt env, status_code: options[:status_code], response: options[:response]
   end
 
   post "/api/sign_up" do |env|
@@ -28,13 +25,10 @@ module Tabster
 
       user.to_json
     else
-      raise ValidationError.new("Email, Username, and Password required")
+      raise ValidationError.new(env, "Email, Username, and Password required")
     end
   rescue ex : Jennifer::RecordInvalid
-    raise ValidationError.new(ex.message)
-  rescue ex : ServerError
-    options = halt_options(ex)
-    halt env, status_code: options[:status_code], response: options[:response]
+    raise ValidationError.new(env, ex.message)
   end
 
   post "/api/sign_in" do |env|
@@ -50,7 +44,7 @@ module Tabster
         begin
           authorized = user.authenticate(password)
         rescue ex : Crypto::Bcrypt::Error
-          raise AuthError.new("Invalid credentials")
+          raise AuthError.new(env, "Invalid credentials")
         end
 
         if authorized
@@ -61,10 +55,7 @@ module Tabster
       end
     end
 
-    raise AuthError.new("Invalid credentials")
-  rescue ex : ServerError
-    options = halt_options(ex)
-    halt env, status_code: options[:status_code], response: options[:response]
+    raise AuthError.new(env, "Invalid credentials")
   end
 
   delete "/api/sign_out" do |env|
@@ -104,42 +95,10 @@ module Tabster
 
         user
       else
-        raise AuthError.new("Invalid credentials")
+        raise AuthError.new(env, "Invalid credentials")
       end
     else
-      raise AuthError.new("Not authorized")
-    end
-  end
-
-  def self.halt_options(status_code = 200, message = nil)
-    response = {status_code: status_code, message: message}.to_json
-    {status_code: status_code, response: response}
-  end
-
-  def self.halt_options(ex : ServerError)
-    halt_options(status_code: ex.status_code, message: ex.message)
-  end
-
-  class ServerError < Exception
-    getter status_code
-
-    def initialize(message)
-      super(message)
-      @status_code = 500
-    end
-  end
-
-  class AuthError < ServerError
-    def initialize(message)
-      super(message)
-      @status_code = 401
-    end
-  end
-
-  class ValidationError < ServerError
-    def initialize(message)
-      super(message)
-      @status_code = 422
+      raise AuthError.new(env, "Not authorized")
     end
   end
 end

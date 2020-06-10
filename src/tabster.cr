@@ -12,18 +12,6 @@ module Tabster
     serve_react(env)
   end
 
-  error 404 do |env, exc|
-    {status_code: 404, message: exc.message}.to_json
-  end
-
-  error 403 do |env, exc|
-    {status_code: 403, message: exc.message}.to_json
-  end
-
-  error 500 do |env, exc|
-    {status_code: 500, message: exc.message}.to_json
-  end
-
   def self.set_content_type_json(env)
     env.response.content_type = "application/json"
   end

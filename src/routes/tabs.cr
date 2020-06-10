@@ -68,7 +68,7 @@ module Tabster
         tab:       tab,
       }).to_json
     else
-      halt env, status_code: 422
+      raise ValidationError.new(env, "Artist required")
     end
   end
 
@@ -93,8 +93,7 @@ module Tabster
     if tab
       tab.to_json
     else
-      response = {status_code: 404, message: "Tab not found"}.to_json
-      halt env, status_code: 404, response: response
+      raise NotFoundError.new(env, "Tab not found")
     end
   end
 end
