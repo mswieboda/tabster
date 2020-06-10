@@ -138,7 +138,9 @@ CREATE TABLE public.users (
     username character varying(254) NOT NULL,
     password_digest character varying(254) NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    email_confirmation_token character varying(254) DEFAULT ''::character varying NOT NULL,
+    email_confirmed boolean DEFAULT false
 );
 
 

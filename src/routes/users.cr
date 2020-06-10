@@ -21,9 +21,7 @@ module Tabster
       user.password = password
       user.save!
 
-      sign_in(env, user)
-
-      user.to_json
+      {status_code: 201, message: "User created"}.to_json
     else
       raise ValidationError.new(env, "Email, Username, and Password required")
     end
