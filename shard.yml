@@ -20,7 +20,7 @@ dependencies:
 
   jennifer:
     github: imdrasil/jennifer.cr
-    version: "~> 0.9.0"
+    version: ~> 0.9.0
 
   pg:
     github: will/crystal-pg
@@ -31,3 +31,7 @@ dependencies:
 
   jwt:
     github: crystal-community/jwt
+
+  email:
+    github: arcage/crystal-email
+    version: ~> 0.6.0
