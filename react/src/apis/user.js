@@ -30,9 +30,14 @@ const signOut = () => {
   return axios.delete('/api/sign_out');
 };
 
+const sendNewConfirmation = email => {
+  return axios.post('/api/users/new_confirmation_email', { email });
+}
+
 export {
   getUser,
   signIn,
   signUp,
   signOut,
+  sendNewConfirmation,
 };

@@ -140,7 +140,7 @@ CREATE TABLE public.users (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     email_confirmation_token character varying(254) DEFAULT ''::character varying NOT NULL,
-    email_confirmed boolean DEFAULT false
+    email_confirmed_at timestamp without time zone
 );
 
 

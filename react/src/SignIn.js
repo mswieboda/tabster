@@ -1,10 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { UserContext } from './contexts/UserContext';
 import { signIn } from './apis/user';
+import UnconfirmedUser from './UnconfirmedUser';
 import TextInput from './TextInput';
 
 function SignIn({history}) {
   const { dispatch: userDispatch } = useContext(UserContext);
+  const [unconfirmed, setUnconfirmed] = useState(false);
 
   const onSubmit = event => {
     const formElements = event.target.elements;
@@ -23,12 +25,21 @@ function SignIn({history}) {
       }
     }).catch(error => {
       const data = error.response.data;
-      console.log(data.message);
+
+      if (data) {
+        console.log(data.message);
+
+        if (data.message === "Unconfirmed email") {
+          setUnconfirmed(true);
+        }
+      }
     });
   };
 
   return (
     <form onSubmit={onSubmit}>
+      {unconfirmed && <UnconfirmedUser />}
+
       <div className="field">
         <TextInput
           type="text"

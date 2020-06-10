@@ -28,7 +28,7 @@ module Tabster
         headers: HTTP::Headers{
           "accept"       => "application/json",
           "content-type" => "application/json",
-          "api-key"      => "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",
+          "api-key"      => "",
         },
         body: body
       )

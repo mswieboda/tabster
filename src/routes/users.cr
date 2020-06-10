@@ -1,5 +1,6 @@
 module Tabster
   before_all "/api/user" { |env| set_content_type_json(env) }
+  before_all "/api/users*" { |env| set_content_type_json(env) }
   before_all "/api/sign_up" { |env| set_content_type_json(env) }
   before_all "/api/sign_in" { |env| set_content_type_json(env) }
   before_all "/api/sign_out" { |env| set_content_type_json(env) }
@@ -20,6 +21,8 @@ module Tabster
       })
       user.password = password
       user.save!
+
+      user.send_email_confirmation(env)
 
       {status_code: 201, message: "User created"}.to_json
     else
@@ -46,9 +49,13 @@ module Tabster
         end
 
         if authorized
-          sign_in(env, user)
+          if user.email_confirmed_at
+            sign_in(env, user)
 
-          next user.to_json
+            next user.to_json
+          else
+            raise AuthError.new(env, "Unconfirmed email")
+          end
         end
       end
     end
@@ -58,6 +65,49 @@ module Tabster
 
   delete "/api/sign_out" do |env|
     sign_out(env)
+    {status_code: 200}.to_json
+  end
+
+  get "/users/confirm" do |env|
+    email = env.params.query["email"]?
+    token = env.params.query["token"]?
+
+    if email && token
+      user = User.all
+        .where { and(_email == email, _email_confirmation_token == token) }
+        .first
+
+      if user
+        user.email_confirm!
+        user.reload
+
+        sign_in(env, user)
+
+        next env.redirect "/"
+      end
+    else
+      raise ValidationError.new(env, "Email and token required")
+    end
+
+    raise AuthError.new(env, "Invalid credentials")
+  end
+
+  post "/api/users/new_confirmation_email" do |env|
+    email = env.params.json["email"]?
+
+    if email
+      user = User.all
+        .where { _email == email.as(String) }
+        .first
+
+      if user
+        user.update!({email_confirmation_token: User.generate_email_confirmation_token})
+        user.send_email_confirmation(env)
+      end
+    else
+      raise ValidationError.new(env, "Email required")
+    end
+
     {status_code: 200}.to_json
   end
 

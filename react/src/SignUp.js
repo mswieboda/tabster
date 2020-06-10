@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
-import { UserContext } from './contexts/UserContext';
+import React, { useState } from 'react';
 import { signUp } from './apis/user';
+import UnconfirmedUser from './UnconfirmedUser';
 import TextInput from './TextInput';
 
 function SignUp({history}) {
-  const { dispatch: userDispatch } = useContext(UserContext);
+  const [signedUp, setSignedUp] = useState(false);
 
   const onSubmit = event => {
     const formElements = event.target.elements;
@@ -19,14 +19,17 @@ function SignUp({history}) {
       const data = response.data;
 
       if (data) {
-        userDispatch({ type: "login", ...data });
-        history.push('/');
+        setSignedUp(true);
       }
     }).catch(error => {
       const data = error.response.data;
       console.log(data.message);
     });
   };
+
+  if (signedUp) {
+    return <UnconfirmedUser />;
+  }
 
   return (
     <form onSubmit={onSubmit}>
