@@ -32,6 +32,13 @@ class Tabster::Tab < Jennifer::Model::Base
     end
   end
 
+  def to_search_result_hash
+    {
+      :artist => artist.try(&.name) || Artist::ANONYMOUS_NAME,
+      :title  => title,
+    }
+  end
+
   def title_escaped
     URI.encode_www_form(title)
   end

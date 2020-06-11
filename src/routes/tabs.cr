@@ -44,6 +44,7 @@ module Tabster
 
     tabs.limit(25)
       .to_a
+      .map { |tab| tab.to_search_result_hash }
       .to_json
   end
 
@@ -74,11 +75,12 @@ module Tabster
 
   get "/api/tabs/:artist" do |env|
     artist = env.params.url["artist"].gsub('+', ' ')
-    tabs = Tab.all.relation(:artist)
+    Tab.all.relation(:artist)
       .where { _artists__name == artist }
       .limit(25)
-
-    tabs.to_a.to_json
+      .to_a
+      .map { |tab| tab.to_search_result_hash }.to_json
+      .to_json
   end
 
   get "/api/tabs/:artist/:title" do |env|
