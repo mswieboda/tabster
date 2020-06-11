@@ -10,6 +10,7 @@ import ArtistTabs from './ArtistTabs';
 import Tabs from './Tabs';
 import Tab from './Tab';
 import ResetPassword from './ResetPassword';
+import UserTabs from './UserTabs';
 
 import {
   BrowserRouter as Router,
@@ -45,6 +46,9 @@ function App() {
               </Route>
               <Route path="/user">
                 <Route exact path="/user/reset-password" component={ResetPassword} />
+              </Route>
+              <Route path="/users">
+              <Route exact path="/users/:username" component={UserTabs} />
               </Route>
             </Switch>
           </div>

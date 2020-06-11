@@ -24,6 +24,7 @@ module Tabster
 
   get "/api/tabs" do |env|
     query = env.params.query["q"]?
+    username = env.params.query["username"]?
     sort = env.params.query["sort"]?
     tabs = Tab.all
 
@@ -34,6 +35,9 @@ module Tabster
         tabs = tabs.relation(:artist)
           .where { (_artists__name.ilike("%#{query}%")) | (_title.ilike("%#{query}%")) }
       end
+    elsif username
+      tabs = tabs.relation(:created_by)
+        .where { _users__username == username.to_s.gsub('+', ' ') }
     end
 
     if sort
@@ -79,7 +83,7 @@ module Tabster
       .where { _artists__name == artist }
       .limit(25)
       .to_a
-      .map { |tab| tab.to_search_result_hash }.to_json
+      .map { |tab| tab.to_search_result_hash }
       .to_json
   end
 
