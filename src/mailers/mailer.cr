@@ -2,7 +2,8 @@ require "./adapters/*"
 
 module Tabster::Mailers
   class Mailer
-    ADAPTER = Adapters::Faker
+    ADAPTER      = Adapters::SendInBlue
+    FAKE_ADAPTER = Adapters::Faker
 
     getter name : String
     getter email : String
@@ -17,7 +18,8 @@ module Tabster::Mailers
     end
 
     def deliver
-      ADAPTER.new(self).deliver
+      adapter = Crystal.env.production? ? ADAPTER : FAKE_ADAPTER
+      adapter.new(self).deliver
     end
   end
 end
