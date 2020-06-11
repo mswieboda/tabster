@@ -19,6 +19,8 @@ module Tabster::Mailers
 
     def deliver
       adapter = Crystal.env.production? ? ADAPTER : FAKE_ADAPTER
+      puts ">>> Mailers::Mailer#deliver"
+      puts "> adapter: #{adapter}"
       adapter.new(self).deliver
     end
   end

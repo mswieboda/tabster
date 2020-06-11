@@ -3,6 +3,8 @@ require "./mailer"
 module Tabster::Mailers
   class Confirmation < Mailer
     def initialize(name, email, confirm_uri)
+      puts ">>> Mailers::Confirmation#initialize"
+
       message = <<-EOM
       <div>
         <p>Hello #{name},</p>

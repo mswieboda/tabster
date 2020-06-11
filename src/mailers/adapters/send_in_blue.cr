@@ -24,6 +24,10 @@ module Tabster::Mailers::Adapters
     end
 
     def deliver
+      puts ">>> Adapters::SendInBlue#deliver"
+      puts ">>> api_url: #{self.class.config.api_url}"
+      puts ">>> api_key: #{self.class.config.api_key}"
+
       uri = URI.parse("#{self.class.config.api_url}/smtp/email")
       body = {
         sender: {
