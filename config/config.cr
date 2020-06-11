@@ -1,8 +1,10 @@
 require "dotenv"
+require "crystal-environment"
 
 Dotenv.load?
 
-require "./initializers/**"
+# uses CRYSTAL_ENV / Crystal.env.name for KEMAL_ENV"
+ENV["KEMAL_ENV"] = Crystal.env.name
 
-# This is optional; it depends how you would like to load your models - centralized or by demand.
+require "./initializers/**"
 require "../src/models/*"

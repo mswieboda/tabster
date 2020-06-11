@@ -39,3 +39,6 @@ dependencies:
   dotenv:
     github: gdotdesign/cr-dotenv
     version: ~> 0.7.0
+
+  crystal-environment:
+    github: Sija/crystal-environment

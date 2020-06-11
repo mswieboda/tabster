@@ -4,6 +4,10 @@ shards:
     github: spider-gazelle/bindata
     version: 1.5.2
 
+  crystal-environment:
+    github: Sija/crystal-environment
+    version: 0.1.0
+
   db:
     github: crystal-lang/crystal-db
     version: 0.9.0
