@@ -16,3 +16,4 @@ production:
   adapter: postgres
   encoding: utf8
   pool: 15
+  db: tabster_production
