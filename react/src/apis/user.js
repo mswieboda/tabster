@@ -34,10 +34,15 @@ const sendNewConfirmation = email => {
   return axios.post('/api/users/new_confirmation_email', { email });
 }
 
+const sendForgotPassword = email => {
+  return axios.post('/api/users/send_forgot_password', { email });
+}
+
 export {
   getUser,
   signIn,
   signUp,
   signOut,
   sendNewConfirmation,
+  sendForgotPassword,
 };

@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { UserContext } from './contexts/UserContext';
 import { signIn } from './apis/user';
 import UnconfirmedUser from './UnconfirmedUser';
+import ForgotPassword from './ForgotPassword';
 import TextInput from './TextInput';
 
 function SignIn({history}) {
@@ -64,6 +65,9 @@ function SignIn({history}) {
           className="btn-primary"
           value="sign in"
         />
+        <span className="field">
+          <ForgotPassword />
+        </span>
       </div>
     </form>
   );

@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { sendNewConfirmation } from './apis/user';
 import TextInput from './TextInput';
 
-import './UnconfirmedUser.scss';
-
 function UnconfirmedUser() {
   const [showUnconfirmedForm, setShowUnconfirmedForm] = useState(false);
   const [unconfirmedEmail, setUnconfirmedEmail] = useState("");
@@ -26,14 +24,13 @@ function UnconfirmedUser() {
     });
   };
 
-
   return (
     <div className="field">
       {!showUnconfirmedForm &&
         <p>
           Please confirm your email, or{' '}
           <span
-            className="send-confirmation"
+            className="link-primary"
             onClick={() => setShowUnconfirmedForm(true)}
           >
             send a new confirmation
@@ -50,12 +47,14 @@ function UnconfirmedUser() {
             value={unconfirmedEmail}
             onChange={event => setUnconfirmedEmail(event.target.value)}
           />
-          <input
-            type="submit"
-            className="btn-primary"
-            value="send"
-            onClick={onSendConfirmation}
-          />
+          <span className="field">
+            <input
+              type="submit"
+              className="btn-primary"
+              value="send"
+              onClick={onSendConfirmation}
+            />
+          </span>
         </div>
       }
     </div>
