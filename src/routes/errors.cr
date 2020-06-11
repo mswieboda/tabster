@@ -36,11 +36,6 @@ module Tabster
     end
   {% end %}
 
-  get "/error" do |env|
-    set_content_type_json(env)
-    raise AuthError.new(env, "Some Auth ERROR")
-  end
-
   def self.error_response(env, status_code, message)
     if env.response.headers.has_key?("Content-Type")
       if env.response.headers["Content-Type"] == "application/json"

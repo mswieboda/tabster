@@ -9,6 +9,7 @@ import NewTab from './NewTab';
 import ArtistTabs from './ArtistTabs';
 import Tabs from './Tabs';
 import Tab from './Tab';
+import ResetPassword from './ResetPassword';
 
 import {
   BrowserRouter as Router,
@@ -41,6 +42,9 @@ function App() {
                     </Switch>
                   </Route>
                 </Switch>
+              </Route>
+              <Route path="/user">
+                <Route exact path="/user/reset-password" component={ResetPassword} />
               </Route>
             </Switch>
           </div>

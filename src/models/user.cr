@@ -1,6 +1,6 @@
 require "jwt"
 require "jennifer/model/authentication"
-require "../mailers/confirmation"
+require "../mailers/*"
 
 class Tabster::User < Jennifer::Model::Base
   table_name :users
@@ -52,18 +52,28 @@ class Tabster::User < Jennifer::Model::Base
   end
 
   def email_confirm_uri
-    "users/confirm?email=#{email}&token=#{email_confirmation_token}"
+    "user/confirm?email=#{email}&token=#{email_confirmation_token}"
   end
 
-  def send_email_confirmation(env)
-    app_root = env.request.host_with_port
+  def reset_password_uri
+    "user/reset_password?email=#{email}&token=#{email_confirmation_token}"
+  end
 
+  def send_email_confirmation(app_root)
     Mailers::Confirmation.new(
       name: username,
       email: email,
-      # TODO: needs to change to https with SSL enabled,
-      # or figure out to determine protocol dynamically
-      confirm_uri: "http://#{app_root}/#{email_confirm_uri}"
+      app_root: "#{app_root}",
+      email_confirm_uri: email_confirm_uri
+    ).deliver
+  end
+
+  def send_reset_password(app_root)
+    Mailers::ResetPassword.new(
+      name: username,
+      email: email,
+      app_root: "#{app_root}",
+      reset_password_uri: reset_password_uri
     ).deliver
   end
 

@@ -1,17 +1,17 @@
 require "./mailer"
 
 module Tabster::Mailers
-  class Confirmation < Mailer
-    def initialize(name, email, app_root, email_confirm_uri)
+  class ResetPassword < Mailer
+    def initialize(name, email, app_root, reset_password_uri)
       message = <<-EOM
       <div>
         <p>#{name},</p>
         <br/>
         <p>
-          Please confirm your email address with this link:
+          Please reset your password with this link:
         </p>
         <p>
-          <a href="#{app_root}/#{email_confirm_uri}">email confirmation</a>
+          <a href="#{app_root}/#{reset_password_uri}">reset password</a>
         </p>
         <br/>
         <p>- <a href="#{app_root}">Tabster</p>
@@ -21,7 +21,7 @@ module Tabster::Mailers
       super(
         name: name,
         email: email,
-        subject: "Email Confirmation",
+        subject: "Password Reset",
         message: message,
       )
     end

@@ -31,11 +31,23 @@ const signOut = () => {
 };
 
 const sendNewConfirmation = email => {
-  return axios.post('/api/users/new_confirmation_email', { email });
+  return axios.post('/api/user/new_confirmation_email', { email });
 }
 
 const sendForgotPassword = email => {
-  return axios.post('/api/users/send_forgot_password', { email });
+  return axios.post('/api/user/send_forgot_password', { email });
+}
+
+const resetPassword = ({
+  email,
+  token,
+  password
+}) => {
+  return axios.post('/api/user/reset_password', {
+    email,
+    token,
+    password
+  });
 }
 
 export {
@@ -45,4 +57,5 @@ export {
   signOut,
   sendNewConfirmation,
   sendForgotPassword,
+  resetPassword,
 };

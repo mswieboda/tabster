@@ -1,6 +1,5 @@
 module Tabster
-  before_all "/api/user" { |env| set_content_type_json(env) }
-  before_all "/api/users*" { |env| set_content_type_json(env) }
+  before_all "/api/user*" { |env| set_content_type_json(env) }
   before_all "/api/sign_up" { |env| set_content_type_json(env) }
   before_all "/api/sign_in" { |env| set_content_type_json(env) }
   before_all "/api/sign_out" { |env| set_content_type_json(env) }
@@ -68,7 +67,7 @@ module Tabster
     {status_code: 200}.to_json
   end
 
-  get "/users/confirm" do |env|
+  get "/user/confirm" do |env|
     email = env.params.query["email"]?
     token = env.params.query["token"]?
 
@@ -86,13 +85,15 @@ module Tabster
         next env.redirect "/"
       end
     else
+      # TODO: redirect to React error page
       raise ValidationError.new(env, "Email and token required")
     end
 
+    # TODO: redirect to React error page
     raise AuthError.new(env, "Invalid credentials")
   end
 
-  post "/api/users/new_confirmation_email" do |env|
+  post "/api/user/new_confirmation_email" do |env|
     email = env.params.json["email"]?
 
     if email
@@ -102,13 +103,77 @@ module Tabster
 
       if user
         user.update!({email_confirmation_token: User.generate_email_confirmation_token})
-        user.send_email_confirmation(env)
+        user.send_email_confirmation(app_root(env))
       end
     else
       raise ValidationError.new(env, "Email required")
     end
 
     {status_code: 200}.to_json
+  end
+
+  post "/api/user/send_forgot_password" do |env|
+    email = env.params.json["email"]?
+
+    if email
+      user = User.all
+        .where { _email == email.as(String) }
+        .first
+
+      if user
+        user.update!({email_confirmation_token: User.generate_email_confirmation_token})
+        user.send_reset_password(app_root(env))
+      end
+    else
+      raise ValidationError.new(env, "Email required")
+    end
+
+    {status_code: 200}.to_json
+  end
+
+  get "/user/reset-password" do |env|
+    email = env.params.query["email"]?
+    token = env.params.query["token"]?
+
+    if email && token
+      user = User.all
+        .where { and(_email == email, _email_confirmation_token == token) }
+        .first
+
+      if user
+        next serve_react(env)
+      end
+    else
+      # TODO: redirect to React error page
+      raise ValidationError.new(env, "Email and token required")
+    end
+
+    # TODO: redirect to React error page
+    raise AuthError.new(env, "Invalid credentials")
+  end
+
+  post "/api/user/reset_password" do |env|
+    email = env.params.json["email"].as(String | Nil)
+    token = env.params.json["token"].as(String | Nil)
+    password = env.params.json["password"].as(String | Nil)
+
+    if email && token && password
+      user = User.all
+        .where { and(_email == email, _email_confirmation_token == token) }
+        .first
+
+      if user
+        user.update!({email_confirmation_token: User.generate_email_confirmation_token})
+        user.password = password
+        user.save!
+
+        sign_in(env, user)
+
+        next user.to_json
+      end
+    end
+
+    raise AuthError.new(env, "Invalid credentials")
   end
 
   def self.sign_in(env, user)
@@ -148,5 +213,11 @@ module Tabster
     else
       raise AuthError.new(env, "Not authorized")
     end
+  end
+
+  def self.app_root(env)
+    # TODO: needs to change to https with SSL enabled,
+    # or figure out to determine protocol dynamically
+    "http://#{env.request.host_with_port}"
   end
 end
