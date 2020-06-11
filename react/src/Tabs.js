@@ -43,9 +43,9 @@ function Tabs() {
       <h3>newest tabs</h3>
       <ul className="tabs">
         {
-          !!tabs.length && tabs.map(tab => {
+          !!tabs.length && tabs.map((tab, index) => {
             return (
-              <li key={tab.id} className="tab">
+              <li key={index} className="tab">
                 <TabLink artist={tab.artist} title={tab.title}>{tab.artist} - {tab.title}</TabLink>
               </li>
             );

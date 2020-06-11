@@ -3,15 +3,17 @@ import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
 import { toURL } from './utils/url';
 import TabLink from './TabLink';
+import UserLink from './UserLink';
 import './Tab.scss';
 
 function Tab(props) {
   const params = useParams();
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const [title, setTitle] = useState(null);
   const [artist, setArtist] = useState(null);
+  const [createdByUsername, setCreatedByUsername] = useState(null);
   const [tab, setTab] = useState(null);
+  const [title, setTitle] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(function loadTab() {
@@ -33,9 +35,11 @@ function Tab(props) {
     axios.get(`/api/tabs/${params.artist}/${params.title}`).then(response => {
       const data = response.data;
 
-      setTitle(data.title);
       setArtist(data.artist);
+      setCreatedByUsername(data.created_by_username);
       setTab(data.tab);
+      setTitle(data.title);
+
       setLoaded(true);
       setLoading(false);
     }).catch(e => {
@@ -64,15 +68,14 @@ function Tab(props) {
 
   return (
     <div>
-      <p>
-        Title:{' '}
-        <TabLink artist={artist} title={title} />
-      </p>
-      <p>
-        Artist:{' '}
-        <Link to={`/tabs/${artist}`}>{artist}</Link>
-      </p>
-      <p>Tab:</p>
+      <div>
+        <TabLink artist={artist} title={title} />{' '}
+        by{' '}
+        <Link to={`/tabs/${artist}`}>{artist}</Link>{' '}
+      </div>
+      <div>
+        created by <UserLink username={createdByUsername} />
+      </div>
       <pre className="tab">{tab}</pre>
     </div>
   );
