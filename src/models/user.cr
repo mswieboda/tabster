@@ -58,8 +58,6 @@ class Tabster::User < Jennifer::Model::Base
   def send_email_confirmation(env)
     app_root = env.request.host_with_port
 
-    puts ">>> send_email_confirmation"
-
     Mailers::Confirmation.new(
       name: username,
       email: email,
