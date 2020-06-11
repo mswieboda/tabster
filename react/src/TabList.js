@@ -9,7 +9,7 @@ function TabList({tabs, renderTabText, renderEmpty}) {
   }
 
   if (!tabs.length && renderEmpty) {
-    return({renderEmpty});
+    return renderEmpty();
   }
 
   return(

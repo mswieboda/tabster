@@ -8,7 +8,7 @@ function UserTabs() {
   const { username } = useParams();
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const [tabs, setTabs] = useState([]);
+  const [tabs, setTabs] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(function loadUserTabs() {
@@ -38,7 +38,7 @@ function UserTabs() {
       <TabList
         tabs={tabs}
         renderTabText={tab => `${tab.artist} - ${tab.title}`}
-        renderEmpty={(<p>No tabs created by this user.</p>)}
+        renderEmpty={() => <p>No tabs created by this user.</p>}
       />
     </div>
   );

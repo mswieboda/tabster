@@ -37,11 +37,11 @@ function ArtistTabs() {
       }
       <TabList
         tabs={tabs}
-        renderEmpty={(
+        renderEmpty={() =>
           <p>
             No tabs found. Add a new tab <Link to="/tabs/new">here</Link>
           </p>
-        )}
+        }
       />
     </div>
   );
