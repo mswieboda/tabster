@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 import { fromURL } from './utils/url';
-import TabLink from './TabLink';
+import TabList from './TabList';
 
 function ArtistTabs() {
   const params = useParams();
@@ -29,38 +29,20 @@ function ArtistTabs() {
     });
   }, [loading, loaded, params.artist]);
 
-  const header = <h3>{fromURL(params.artist)}</h3>;
-
-  if (!loaded) {
-    return(
-      <div>
-        {header}
-        <p>
-          {!loading && error ? error : "loading..."}
-        </p>
-      </div>
-    );
-  }
-
   return (
     <div>
-      {header}
-      {tabs && !!tabs.length &&
-        <ul>
-          {
-            tabs.map((tab, index) => {
-              return (
-                <li key={index}>
-                  <TabLink artist={tab.artist} title={tab.title} />
-                </li>
-              );
-            })
-          }
-        </ul>
+      <h3>{fromURL(params.artist)}</h3>
+      {error &&
+        <p>{error}</p>
       }
-      {(!tabs || !tabs.length) &&
-        <p>No tabs found. Add a new tab <Link to="/tabs/new">here</Link>.</p>
-      }
+      <TabList
+        tabs={tabs}
+        renderEmpty={(
+          <p>
+            No tabs found. Add a new tab <Link to="/tabs/new">here</Link>
+          </p>
+        )}
+      />
     </div>
   );
 }

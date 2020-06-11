@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { fromURL } from './utils/url';
-import TabLink from './TabLink';
+import TabList from './TabList';
 
 function UserTabs() {
   const { username } = useParams();
@@ -29,38 +29,17 @@ function UserTabs() {
     });
   }, [loading, loaded, username]);
 
-  const header = <h3>{fromURL(username)}</h3>;
-
-  if (!loaded) {
-    return(
-      <div>
-        {header}
-        <p>
-          {!loading && error ? error : "loading..."}
-        </p>
-      </div>
-    );
-  }
-
   return (
     <div>
-      {header}
-      {tabs && !!tabs.length &&
-        <ul>
-          {
-            tabs.map((tab, index) => {
-              return (
-                <li key={index}>
-                  <TabLink artist={tab.artist} title={tab.title}>{tab.artist} - {tab.title}</TabLink>
-                </li>
-              );
-            })
-          }
-        </ul>
+      <h3>{fromURL(username)}</h3>
+      {error &&
+        <p>{error}</p>
       }
-      {tabs && !tabs.length &&
-        <p>No tabs created by this user.</p>
-      }
+      <TabList
+        tabs={tabs}
+        renderTabText={tab => `${tab.artist} - ${tab.title}`}
+        renderEmpty={(<p>No tabs created by this user.</p>)}
+      />
     </div>
   );
 }

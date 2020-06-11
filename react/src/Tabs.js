@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import TabLink from './TabLink';
+import TabList from './TabList';
 
 import './Tabs.scss';
 
@@ -41,17 +41,10 @@ function Tabs() {
   return (
     <div>
       <h3>newest tabs</h3>
-      <ul className="tabs">
-        {
-          !!tabs.length && tabs.map((tab, index) => {
-            return (
-              <li key={index} className="tab">
-                <TabLink artist={tab.artist} title={tab.title}>{tab.artist} - {tab.title}</TabLink>
-              </li>
-            );
-          })
-        }
-      </ul>
+      <TabList
+        tabs={tabs}
+        renderTabText={tab => `${tab.artist} - ${tab.title}`}
+      />
     </div>
   );
 }
