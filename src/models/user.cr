@@ -61,7 +61,9 @@ class Tabster::User < Jennifer::Model::Base
     Mailers::Confirmation.new(
       name: username,
       email: email,
-      confirm_uri: "#{app_root}/#{email_confirm_uri}"
+      # TODO: needs to change to https with SSL enabled,
+      # or figure out to determine protocol dynamically
+      confirm_uri: "http://#{app_root}/#{email_confirm_uri}"
     ).deliver
   end
 

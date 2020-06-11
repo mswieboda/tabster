@@ -1,8 +1,8 @@
 default: &default
+  adapter: postgres
   host: localhost
   user: tabster
   password: retsbat321!
-  adapter: postgres
 
 development:
   <<: *default
@@ -13,5 +13,6 @@ test:
   db: tabster_test
 
 production:
+  adapter: postgres
   encoding: utf8
   pool: 15
