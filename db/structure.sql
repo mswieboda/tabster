@@ -100,7 +100,8 @@ CREATE TABLE public.tabs (
     artist_id integer,
     tab text NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    created_by_id integer
 );
 
 

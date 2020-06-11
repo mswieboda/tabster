@@ -1,4 +1,8 @@
-class Artist < Jennifer::Model::Base
+class Tabster::Artist < Jennifer::Model::Base
+  ANONYMOUS_NAME = "anonymous"
+
+  table_name :artists
+
   with_timestamps
 
   mapping(

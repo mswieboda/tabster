@@ -3,6 +3,8 @@ require "jennifer/model/authentication"
 require "../mailers/*"
 
 class Tabster::User < Jennifer::Model::Base
+  ANONYMOUS_USERNAME = "anonymous"
+
   table_name :users
 
   include Jennifer::Model::Authentication
