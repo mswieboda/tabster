@@ -4,13 +4,8 @@ import TabLink from './TabLink';
 import './TabList.scss';
 
 function TabList({tabs, renderTabText, renderEmpty}) {
-  if (!tabs) {
-    return(<p>loading...</p>);
-  }
-
-  if (!tabs.length && renderEmpty) {
-    return renderEmpty();
-  }
+  if (!tabs) return(<p>loading...</p>);
+  if (!tabs.length && renderEmpty) return renderEmpty();
 
   return(
     <ul className="tab-list">

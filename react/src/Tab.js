@@ -18,17 +18,20 @@ function Tab(props) {
 
   useEffect(function loadTab() {
     function sameTabLoaded(artist, title, params) {
-      if (!artist || !title) return false;
+      if (!artist || !title || !params.artist || !params.title) return false;
 
-      let artists = [artist, params.artist].map(s => toURL(s).toLowerCase());
-      let titles = [title, params.title].map(s => toURL(s).toLowerCase());
+      function toLowerURL(artist, title) {
+        return toURL(`${artist}/${title}`).toLowerCase();
+      }
 
-      return artists[0] === artists[1] && titles[0] === titles[1];
+      return toLowerURL(artist, title) === toLowerURL(params.artist, params.title);
     }
 
     if (loading || error || (loaded && sameTabLoaded(artist, title, params))) {
       return;
     }
+
+    if (loading || error || loaded) return;
 
     setLoading(true);
 
@@ -71,7 +74,7 @@ function Tab(props) {
       <div>
         <TabLink artist={artist} title={title} />{' '}
         by{' '}
-        <Link to={`/tabs/${artist}`}>{artist}</Link>{' '}
+        <Link to={`/tabs/${toURL(artist)}`}>{artist}</Link>{' '}
       </div>
       <div>
         created by <UserLink username={createdByUsername} />

@@ -1,15 +1,15 @@
-function toURL(str) {
-  // decode, then encode str
-  str = encodeURIComponent(decodeURIComponent(str));
-
-  // replace all encoded spaces, or encoded +'s with normal +'s
-  return str.replace(/(%20|%2B|\s)/g, '+');
+function toURL(url) {
+  // replace spaces with +, replace ? with %3F
+  return url
+    .replace(/\s/g, '+')
+    .replace(/\?/g, "%3F");
 }
 
-function fromURL(str) {
-  str = decodeURIComponent(str);
-
-  return str.replace(/\+/g, ' ');
+function fromURL(url) {
+  // replace + with spaces, replace %3F with ?
+  return url
+    .replace(/\+/g, ' ')
+    .replace(/(%3F)/g, '?');
 }
 
 export {

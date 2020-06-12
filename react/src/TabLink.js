@@ -4,7 +4,7 @@ import { toURL } from './utils/url';
 
 function TabLink({ children, artist, title }) {
   const encodedUrl = () => {
-    return `/tabs/${toURL(artist)}/${toURL(title)}`;
+    return "/tabs/" + toURL(`${artist}/${title}`);
   };
 
   return (
