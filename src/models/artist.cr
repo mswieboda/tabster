@@ -20,8 +20,4 @@ class Tabster::Artist < Jennifer::Model::Base
       json.field "name", name
     end
   end
-
-  def name_escaped
-    URI.encode_www_form(name)
-  end
 end

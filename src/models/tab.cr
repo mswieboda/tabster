@@ -31,8 +31,4 @@ class Tabster::Tab < Jennifer::Model::Base
       :title  => title,
     }
   end
-
-  def title_escaped
-    URI.encode_www_form(title)
-  end
 end

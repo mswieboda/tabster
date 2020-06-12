@@ -1,16 +1,31 @@
 module Tabster
+  get "/tabs/:artist" do |env|
+    name = env.params.url["artist"]
+
+    artist = Artist.all
+      .where { lower(_name) == from_url(name).downcase }
+      .limit(1)
+      .first
+
+    if artist && name != to_url_spaces(artist.name)
+      env.redirect "/tabs/#{to_url(artist.name)}"
+    else
+      serve_react(env)
+    end
+  end
+
   get "/tabs/:artist/:title" do |env|
     name = env.params.url["artist"]
     title = env.params.url["title"]
 
     tab = Tab.all
       .relation(:artist)
-      .where { (lower(_artists__name) == name.gsub('+', ' ').downcase) & (lower(_title) == title.gsub('+', ' ').downcase) }
+      .where { (lower(_artists__name) == from_url(name).downcase) & (lower(_title) == from_url(title).downcase) }
       .limit(1)
       .first
 
-    if tab && (name != tab.artist!.name_escaped || title != tab.title_escaped)
-      env.redirect "/tabs/#{tab.artist!.name_escaped}/#{tab.title_escaped}"
+    if tab && (name != to_url_spaces(tab.artist!.name) || title != to_url_spaces(tab.title))
+      env.redirect "/tabs/#{to_url(tab.artist!.name)}/#{to_url(tab.title)}"
     else
       serve_react(env)
     end
@@ -37,7 +52,7 @@ module Tabster
       end
     elsif username
       tabs = tabs.relation(:created_by)
-        .where { _users__username == username.to_s.gsub('+', ' ') }
+        .where { _users__username == from_url(username) }
     end
 
     if sort
@@ -78,9 +93,10 @@ module Tabster
   end
 
   get "/api/tabs/:artist" do |env|
-    artist = env.params.url["artist"].gsub('+', ' ')
+    artist = env.params.url["artist"]
+
     Tab.all.relation(:artist)
-      .where { _artists__name == artist }
+      .where { _artists__name == from_url(artist) }
       .limit(25)
       .to_a
       .map { |tab| tab.to_search_result_hash }
@@ -88,11 +104,12 @@ module Tabster
   end
 
   get "/api/tabs/:artist/:title" do |env|
-    artist = env.params.url["artist"].gsub('+', ' ')
-    title = env.params.url["title"].gsub('+', ' ')
+    artist = env.params.url["artist"]
+    title = env.params.url["title"]
+
     tab = Tab.all
       .relation(:artist)
-      .where { (_artists__name == artist) & (_title == title) }
+      .where { (_artists__name == from_url(artist)) & (_title == from_url(title)) }
       .limit(1)
       .first
 
@@ -101,5 +118,21 @@ module Tabster
     else
       raise NotFoundError.new(env, "Tab not found")
     end
+  end
+
+  def self.from_url(str)
+    str.gsub('+', ' ')
+  end
+
+  def self.to_url(str)
+    to_url_spaces(to_url_escapes(str))
+  end
+
+  def self.to_url_spaces(str)
+    str.gsub(' ', '+')
+  end
+
+  def self.to_url_escapes(str)
+    str.gsub('?', "%3F")
   end
 end
