@@ -1,4 +1,10 @@
+@import "./styles/_scss-vars.scss";
+
 .menu {
   position: absolute;
   right: 0;
+
+  padding: 15px;
+  border: 1px solid $color-primary;
+  border-radius: 5px;
 }

@@ -1,7 +1,8 @@
 .header {
+  position: relative;
   display: flex;
   align-items: center;
-  margin-bottom: 15px;
+  margin: 0px 15px;
 
   a:hover {
     text-decoration: none;
@@ -11,13 +12,14 @@
 .app-banner {
   font-size: 33px;
   color: #00cc00;
-  margin: 0px 15px;
+  margin-right: 15px;
 }
 
 .links {
   display: flex;
   justify-content: center;
   align-items: baseline;
+  margin-right: 15px;
 
   .new-tab-link {
     margin: 5px;

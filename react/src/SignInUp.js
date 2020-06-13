@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import './SignInUp.scss';
+
 function SignInUp() {
   return (
-    <div>
+    <div className="sign-in-up">
       <Link
         className="btn-primary"
         to="/sign-in"

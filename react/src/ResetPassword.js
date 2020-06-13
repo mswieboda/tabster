@@ -6,12 +6,13 @@ import { resetPassword } from './apis/user';
 import TextInput from './TextInput';
 
 function ResetPassword({location}) {
-  const { dispatch: userDispatch } = useContext(UserContext);
+  const { user, dispatch: userDispatch } = useContext(UserContext);
   const { search } = useLocation();
   const { email, token } = queryString.parse(search);
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [resetted, setResetted] = useState(false);
+  const [signedIn, setSignedIn] = useState(false);
 
   const onSubmit = event => {
     event.preventDefault();
@@ -22,13 +23,14 @@ function ResetPassword({location}) {
     }
 
     resetPassword({
-      email: email,
-      token: token,
+      email: email || user.email,
+      token: token || user.emailToken,
       password: password,
     }).then(response => {
       const data = response.data;
 
       if (data) {
+        setSignedIn(!user.isLoggedIn);
         userDispatch({ type: "login", ...data });
         setResetted(true);
       }
@@ -43,7 +45,13 @@ function ResetPassword({location}) {
 
   if (resetted) {
     return(
-      <div>Password successfully reset, you have been signed in</div>
+      <div>
+        Password successfully reset
+        {
+          signedIn && ", you have been signed in"
+        }
+        .
+      </div>
     );
   }
 

@@ -81,9 +81,9 @@ class Tabster::User < Jennifer::Model::Base
 
   def to_json(json : JSON::Builder)
     json.object do
-      json.field "id", id
       json.field "email", email
       json.field "username", username
+      json.field "email_confirmation_token", email_confirmation_token
       json.field "email_confirmed", email_confirmed?
     end
   end

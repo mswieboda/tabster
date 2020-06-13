@@ -4,9 +4,10 @@ import { getUser } from '../apis/user';
 // Initial state
 const initialState = {
   isLoggedIn: false,
-  authToken: null,
+  isEmailConfirmed: false,
   email: null,
-  username: null
+  username: null,
+  emailToken: null,
 };
 
 const UserContext = createContext(initialState);
@@ -17,9 +18,10 @@ function userReducer(state, action) {
     case 'login':
       return {
         isLoggedIn: true,
-        authToken: action.auth_token,
+        isEmailConfirmed: action.email_confirmed,
         email: action.email,
         username: action.username,
+        emailToken: action.email_confirmation_token,
       };
     case 'logout':
       return initialState;

@@ -153,18 +153,18 @@ module Tabster
   end
 
   post "/api/user/reset_password" do |env|
-    email = env.params.json["email"].as(String | Nil)
-    token = env.params.json["token"].as(String | Nil)
-    password = env.params.json["password"].as(String | Nil)
+    email = env.params.json["email"]?
+    token = env.params.json["token"]?
+    password = env.params.json["password"]?
 
     if email && token && password
       user = User.all
-        .where { and(_email == email, _email_confirmation_token == token) }
+        .where { and(_email == email.to_s, _email_confirmation_token == token.to_s) }
         .first
 
       if user
         user.update!({email_confirmation_token: User.generate_email_confirmation_token})
-        user.password = password
+        user.password = password.to_s
         user.save!
 
         sign_in(env, user)

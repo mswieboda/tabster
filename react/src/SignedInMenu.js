@@ -1,5 +1,8 @@
 import React, { useContext, useRef, useState } from 'react';
-import { withRouter } from 'react-router-dom';
+import {
+  Link,
+  withRouter,
+} from 'react-router-dom';
 import { UserContext } from './contexts/UserContext';
 import { useOnBlur } from './hooks/useOnBlur';
 import { signOut } from './apis/user';
@@ -50,10 +53,15 @@ function SignedInMenu({history}) {
       {menuOpen &&
         <div className="menu">
           <div>
+            {user.username}
+          </div>
+          <div>
             {user.email}
           </div>
           <div>
-            {user.username}
+            <Link
+              to={`/user/reset-password`}
+            >Reset Password</Link>
           </div>
           <button
             className="btn-primary"
