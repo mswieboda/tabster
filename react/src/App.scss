@@ -16,19 +16,28 @@
   margin: 5px;
 }
 
-a {
-  color: $color-primary;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
 //
 // Components
 //
+
+a {
+  text-decoration: none;
+}
+
+a,
+.link-primary {
+  color: $color-primary;
+  font-weight: bold;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.link-primary {
+  cursor: pointer;
+}
+
 .btn-primary {
   border: 1px solid #00cc00;
   border-radius: 5px;
@@ -47,9 +56,4 @@ a:hover {
   &:focus {
     outline: auto;
   }
-}
-
-.link-primary {
-  color: $color-primary;
-  cursor: pointer;
 }

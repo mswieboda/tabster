@@ -51,7 +51,7 @@ function SignedInMenu({history}) {
         <MenuIcon />
       </button>
       {menuOpen &&
-        <div className="menu">
+        <div className="signed-in-menu">
           <div>
             {user.username}
           </div>
@@ -59,16 +59,16 @@ function SignedInMenu({history}) {
             {user.email}
           </div>
           <div>
-            <Link
-              to={`/user/reset-password`}
-            >Reset Password</Link>
+            <Link to={`/user/reset-password`}>reset password</Link>
           </div>
-          <button
-            className="btn-primary"
-            onClick={onSignOut}
-          >
-            sign out
-          </button>
+          <div className="signed-in-menu-footer">
+            <span
+              className="link-primary"
+              onClick={onSignOut}
+            >
+              sign out
+            </span>
+          </div>
         </div>
       }
     </div>
