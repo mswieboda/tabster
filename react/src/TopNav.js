@@ -21,12 +21,11 @@ function TopNav() {
 
       <div className="links">
         <Search />
-        <Link
-          to="/tabs/new"
-          className="new-tab-link"
-        >
-          <AddIcon className="icon" /> new tab
-        </Link>
+        <div className="new-tab-container">
+          <Link to="/tabs/new">
+            <AddIcon className="icon" /> new tab
+          </Link>
+        </div>
       </div>
 
       <div className="gap">

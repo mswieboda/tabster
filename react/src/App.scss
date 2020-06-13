@@ -31,6 +31,8 @@ a,
 
   &:hover {
     border-radius: 5px;
+    margin: -3px;
+    padding: 3px;
     background-color: $color-bg-highlight;
     color: $color-primary-highlight;
   }

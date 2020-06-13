@@ -8,7 +8,6 @@ import UserLink from './UserLink';
 import {
   FaPen as EditIcon,
   FaRegStar as AddIcon,
-  FaStar as AddedIcon,
   FaLastfmSquare as LastFMIcon,
 } from 'react-icons/fa';
 

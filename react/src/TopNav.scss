@@ -8,16 +8,15 @@
 .app-banner {
   font-size: 33px;
   color: #00cc00;
-  margin-right: 15px;
+  margin: 5px 15px 5px 5px;
 }
 
 .links {
   display: flex;
   justify-content: center;
   align-items: baseline;
-  margin-right: 15px;
 
-  .new-tab-link {
+  .new-tab-container {
     margin: 5px;
 
     .icon {
