@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "start": "cd react && yarn start",
     "build": "cd react && yarn build",
     "heroku-postbuild": "cd react && yarn install && yarn build"
   },

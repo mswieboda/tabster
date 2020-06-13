@@ -28,21 +28,15 @@ make sam db:create
 make sam db:migrate
 ```
 
-To run the React dev server, first `cd` into `./react` directory
+To run the React dev server
 
 ```
 yarn start
 ```
 
-To compile the React build for releasing:
+## Heroku Setup
 
-```
-yarn build
-```
-
-## Heroku Release
-
-To deploy to heroku, first add the custom crystal buildpack:
+To setup the app with [Heroku](https://heroku.com), first add the custom crystal buildpack:
 
 ```
 heroku create app_name --buildpack https://github.com/84codes/heroku-buildpack-crystal.git
@@ -54,16 +48,18 @@ Then add the nodejs buildpack for yarn installation and building release assets:
 heroku buildpacks:add --index 1 heroku/nodejs
 ```
 
-then to deploy:
-
-```
-git push heroku master
-```
-
 Make sure the web service is initially set up to run one web node:
 
 ```
 heroku ps:scale web=1
+```
+
+## Heroku Release
+
+To kick off a new deploy/release
+
+```
+git push heroku master
 ```
 
 and to check which processes are running (`web` should be `up`):
@@ -72,10 +68,12 @@ and to check which processes are running (`web` should be `up`):
 heroku ps
 ```
 
-To create DB, or to run migrations, use the `sam` Procfile process-type:
+On each release any pending migrations are ran via `release: ./bin/sam db:migrate` in the `Procfile`.
+
+To run manual DB tasks, or `sam` tasks this can be done via:
 
 ```
-heroku run sam db:create
 heroku run sam db:migrate
+heroku run sam db:rollback
 heroku run sam some_other_task
 ```
