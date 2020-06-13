@@ -1,12 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
+import { UserContext } from './contexts/UserContext';
 import { toURL } from './utils/url';
 import TabLink from './TabLink';
 import UserLink from './UserLink';
+import {
+  FaPen as EditIcon,
+  FaRegStar as AddIcon,
+  FaStar as AddedIcon,
+  FaLastfmSquare as LastFMIcon,
+} from 'react-icons/fa';
+
 import './Tab.scss';
 
 function Tab(props) {
+  const { user } = useContext(UserContext)
   const params = useParams();
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -15,6 +24,9 @@ function Tab(props) {
   const [tab, setTab] = useState(null);
   const [title, setTitle] = useState(null);
   const [error, setError] = useState(null);
+
+  const canEdit = () => createdByUsername === user.username;
+  const canAdd = () => user.isLoggedIn;
 
   useEffect(function loadTab() {
     function sameTabLoaded(artist, title, params) {
@@ -71,13 +83,26 @@ function Tab(props) {
 
   return (
     <div>
-      <div>
-        <TabLink artist={artist} title={title} />{' '}
-        by{' '}
-        <Link to={`/tabs/${toURL(artist)}`}>{artist}</Link>{' '}
-      </div>
-      <div>
-        created by <UserLink username={createdByUsername} />
+      <div className="tab-header">
+        <div>
+          <div>
+            <TabLink artist={artist} title={title} />{' '}
+            by{' '}
+            <Link to={`/tabs/${toURL(artist)}`}>{artist}</Link>{' '}
+          </div>
+          <div>
+            created by <UserLink username={createdByUsername} />
+          </div>
+        </div>
+        <div className="tab-actions">
+          {canEdit() &&
+            <TabLink className="action" artist={artist} title={title} edit={true}><EditIcon /> edit</TabLink>
+          }
+          {canAdd() &&
+            <TabLink className="action" artist={artist} title={title} edit={true}><AddIcon /> add</TabLink>
+          }
+          <a className="action" href="https://last.fm/music/blink-182"><LastFMIcon /> lastfm</a>
+        </div>
       </div>
       <pre className="tab">{tab}</pre>
     </div>

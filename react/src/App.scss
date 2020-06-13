@@ -30,7 +30,9 @@ a,
   font-weight: bold;
 
   &:hover {
-    text-decoration: underline;
+    border-radius: 5px;
+    background-color: $color-bg-highlight;
+    color: $color-primary-highlight;
   }
 }
 

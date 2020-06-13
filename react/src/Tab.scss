@@ -1,5 +1,27 @@
 @import "./styles/_scss-vars.scss";
 
+.tab-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tab-actions {
+  display: flex;
+
+  .action {
+    margin-left: 5px;
+    padding: 5px 10px;
+    border-radius: 5px;
+
+    &:hover {
+      background-color: $color-bg-highlight;
+      color: $color-primary-highlight;
+      text-decoration: none;
+    }
+  }
+}
+
 .tab {
   color: $color-primary;
 }
