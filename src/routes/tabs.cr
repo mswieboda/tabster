@@ -88,6 +88,33 @@ module Tabster
     }).to_json
   end
 
+  patch "/api/tabs/:id" do |env|
+    tab = Tab.find!(env.params.url["id"]?)
+
+    raise AuthError.new(env, "not authorized") if tab.created_by_id != current_user_id(env)
+
+    artist = env.params.json["artist"].as(Hash(String, JSON::Any)) if env.params.json.has_key?("artist")
+
+    if artist
+      artist_id = artist["id"].as_i?
+      artist_name = artist["name"].as_s?
+
+      artist_id ||= Artist.create({name: artist_name}).id
+
+      tab.artist_id = artist_id
+    end
+
+    title = env.params.json["title"]?
+    tab_content = env.params.json["tab"]?
+
+    tab.title = title.to_s if title
+    tab.tab = tab_content.to_s if tab_content
+
+    tab.save!
+
+    tab.to_json
+  end
+
   get "/api/tabs/:artist" do |env|
     artist = env.params.url["artist"]
 
