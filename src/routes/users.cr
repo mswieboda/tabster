@@ -5,7 +5,7 @@ module Tabster
   before_all "/api/sign_out" { |env| set_content_type_json(env) }
 
   get "/api/user" do |env|
-    current_user(env).to_json
+    current_user!(env).to_json
   end
 
   post "/api/sign_up" do |env|

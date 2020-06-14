@@ -1,5 +1,5 @@
 module Tabster
-  def self.current_user(env)
+  def self.current_user!(env)
     auth_cookie = env.request.cookies["auth"]?
 
     if auth_cookie
@@ -19,7 +19,7 @@ module Tabster
     end
   end
 
-  def self.current_user?(env)
+  def self.current_user(env)
     auth_cookie = env.request.cookies["auth"]?
 
     if auth_cookie
@@ -33,6 +33,10 @@ module Tabster
 
       user
     end
+  end
+
+  def self.current_user_id(env)
+    current_user(env).try(&.id)
   end
 
   def self.sign_in(env, user)

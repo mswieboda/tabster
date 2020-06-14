@@ -83,7 +83,7 @@ module Tabster
     Tab.create({
       title:     title.to_s,
       artist_id: artist_id,
-      created_by_id: current_user?(env).try(&.id),
+      created_by_id: current_user_id(env),
       tab:       tab.to_s,
     }).to_json
   end
