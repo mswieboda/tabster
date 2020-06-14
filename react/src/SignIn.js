@@ -38,10 +38,12 @@ function SignIn({history}) {
     });
   };
 
+  if (unconfirmed) {
+    return <UnconfirmedUser />;
+  }
+
   return (
     <form onSubmit={onSubmit}>
-      {unconfirmed && <UnconfirmedUser />}
-
       <div className="field">
         <TextInput
           type="text"

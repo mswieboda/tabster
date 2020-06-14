@@ -3,17 +3,17 @@ import { sendNewConfirmation } from './apis/user';
 import TextInput from './TextInput';
 
 function UnconfirmedUser() {
-  const [showUnconfirmedForm, setShowUnconfirmedForm] = useState(false);
-  const [unconfirmedEmail, setUnconfirmedEmail] = useState("");
+  const [showForm, setShowForm] = useState(false);
+  const [email, setEmail] = useState("");
 
-  const onSendConfirmation = event => {
+  const onSend = event => {
     event.preventDefault();
 
-    sendNewConfirmation(unconfirmedEmail).then(response => {
+    sendNewConfirmation(email).then(response => {
       const data = response.data;
 
       if (data) {
-        setShowUnconfirmedForm(false);
+        setShowForm(false);
       }
     }).catch(error => {
       const data = error.response.data;
@@ -24,40 +24,44 @@ function UnconfirmedUser() {
     });
   };
 
+  if (!showForm) {
+    return(
+      <div>
+        click the link sent to your email
+        <br />
+        to confirm your email and account
+        <br />
+        or
+        <span
+          className="link-primary"
+          onClick={() => setShowForm(true)}
+        >
+          send another one
+        </span>
+      </div>
+    );
+  }
+
   return (
-    <div className="field">
-      {!showUnconfirmedForm &&
-        <p>
-          Please confirm your email, or{' '}
-          <span
-            className="link-primary"
-            onClick={() => setShowUnconfirmedForm(true)}
-          >
-            send a new confirmation
-          </span>
-        </p>
-      }
-      {showUnconfirmedForm &&
-        <div>
-          <TextInput
-            type="text"
-            name="email"
-            required
-            placeholder="email"
-            value={unconfirmedEmail}
-            onChange={event => setUnconfirmedEmail(event.target.value)}
+    <form onSubmit={onSend}>
+      <div className="field">
+        <TextInput
+          type="text"
+          name="email"
+          required
+          placeholder="email"
+          value={email}
+          onChange={event => setEmail(event.target.value)}
+        />
+        <span className="field">
+          <input
+            type="submit"
+            className="btn-primary"
+            value="send"
           />
-          <span className="field">
-            <input
-              type="submit"
-              className="btn-primary"
-              value="send"
-              onClick={onSendConfirmation}
-            />
-          </span>
-        </div>
-      }
-    </div>
+        </span>
+      </div>
+    </form>
   );
 }
 
