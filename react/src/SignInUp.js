@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import DropMenu from './DropMenu';
 import SignIn from './SignIn';
+import SignUp from './SignUp';
 
 import './SignInUp.scss';
 
@@ -11,12 +11,9 @@ function SignInUp() {
       <DropMenu button={() => <span className="link-primary">sign in</span>}>
         <SignIn />
       </DropMenu>
-      <Link
-        className="link-primary"
-        to="/sign-up"
-      >
-        sign up
-      </Link>
+      <DropMenu button={() => <span className="link-primary">sign up</span>}>
+        <SignUp />
+      </DropMenu>
     </div>
   );
 }
