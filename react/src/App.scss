@@ -62,6 +62,12 @@ a,
   }
 }
 
-form .field {
-  margin: 0 5px 15px 5px;
+form {
+  .field {
+    margin: 0 5px 15px 5px;
+
+    &:last-child {
+      margin: 0 5px;
+    }
+  }
 }
