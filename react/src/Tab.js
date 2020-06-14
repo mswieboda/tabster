@@ -8,8 +8,6 @@ import TabLink from './TabLink';
 import UserLink from './UserLink';
 import {
   FaPen as EditIcon,
-  FaRegStar as AddIcon,
-  FaLastfmSquare as LastFMIcon,
 } from 'react-icons/fa';
 
 import './Tab.scss';
@@ -30,7 +28,6 @@ function Tab({history}) {
   const [edit, setEdit] = useState(false);
 
   const canEdit = () => createdByUsername === user.username;
-  const canAdd = () => user.isLoggedIn;
 
   const sameTabLoaded = (artist, title, params) => {
     if (!artist || !title || !params.artist || !params.title) return false;
@@ -137,14 +134,6 @@ function Tab({history}) {
               <EditIcon /> edit
             </span>
           }
-          {canAdd() &&
-            <span
-              className="link-primary action"
-            >
-              <AddIcon /> add
-            </span>
-          }
-          <a className="action" href="https://last.fm/music/blink-182"><LastFMIcon /> lastfm</a>
         </div>
       </div>
       <pre className="tab">{tab}</pre>
