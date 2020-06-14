@@ -29,7 +29,6 @@ function DropMenu({
       ref={ref}
     >
       <span
-        className="menu-btn link-primary"
         onClick={onMenuButtonClick}
       >
         {button()}

@@ -1,15 +1,10 @@
 @import "./styles/_scss-vars.scss";
 
 .drop-menu {
-  .menu-btn,
-  .menu-btn:hover {
-    margin: 0;
-    padding: 5px 10px;
-  }
-
   .menu {
     position: absolute;
     right: 0;
+    top: 1.5em;
     z-index: 3;
 
     background-color: $color-bg;
