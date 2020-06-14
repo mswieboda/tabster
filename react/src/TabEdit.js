@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { toURL } from './utils/url';
 import TabForm from './TabForm';
 
 function TabEdit({
-  history,
   id,
   user,
   title,
   artist,
   tab,
   createdByUsername,
+  onSave: onSaveProp,
 }) {
   const [error, setError] = useState(null);
   const [saving, setSaving] = useState(false);
@@ -26,11 +25,7 @@ function TabEdit({
       artist: artist,
       tab: tab
     }).then(response => {
-      const data = response.data;
-
-      if (data) {
-        history.push(`/tabs/${toURL(data.artist.name)}/${toURL(data.title)}`);
-      }
+      onSaveProp(response.data);
     }).catch(error => {
       console.log(error);
       setSaving(false);

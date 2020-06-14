@@ -18,14 +18,12 @@ E|-------------
 `;
 
 function TabForm({
-id,
 onSave,
 ...props
 }) {
   const { value: title, bind: bindTitle } = useInput(props.title || "");
   const { value: artist, bind: bindArtist } = useNonNativeInput(props.artist || {id: null, name: ""});
   const { value: tab, bind: bindTab } = useInput(props.tab || tabPlaceholder);
-  const edit = !!id;
 
   const onSubmit = event => {
     event.preventDefault();
@@ -48,7 +46,6 @@ onSave,
           <ArtistInput
             required
             placeholder="artist of song"
-            readOnly={edit}
             {...bindArtist}
           />
         </div>

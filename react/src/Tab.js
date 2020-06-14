@@ -14,7 +14,7 @@ import {
 
 import './Tab.scss';
 
-function Tab() {
+function Tab({history}) {
   const { user } = useContext(UserContext)
   const params = useParams();
   const [loading, setLoading] = useState(false);
@@ -32,17 +32,32 @@ function Tab() {
   const canEdit = () => createdByUsername === user.username;
   const canAdd = () => user.isLoggedIn;
 
-  useEffect(function loadTab() {
-    function sameTabLoaded(artist, title, params) {
-      if (!artist || !title || !params.artist || !params.title) return false;
+  const sameTabLoaded = (artist, title, params) => {
+    if (!artist || !title || !params.artist || !params.title) return false;
 
-      function toLowerURL(artistName, title) {
-        return toURL(`${artistName}/${title}`).toLowerCase();
-      }
-
-      return toLowerURL(artist.name, title) === toLowerURL(params.artist, params.title);
+    function toLowerURL(artistName, title) {
+      return toURL(`${artistName}/${title}`).toLowerCase();
     }
 
+    return toLowerURL(artist.name, title) === toLowerURL(params.artist, params.title);
+  };
+
+  const onEditSave = data => {
+    setEdit(false);
+
+    if (sameTabLoaded(data.artist, data.title, params)) {
+      setTabID(data.id);
+      setArtist(data.artist);
+      setCreatedByUsername(data.created_by_username);
+      setTab(data.tab);
+      setTitle(data.title);
+    } else {
+      history.push(`/tabs/${toURL(data.artist.name)}/${toURL(data.title)}`);
+      setLoaded(false);
+    }
+  };
+
+  useEffect(function loadTab() {
     if (loading || error || (loaded && sameTabLoaded(artist, title, params))) {
       return;
     }
@@ -95,6 +110,7 @@ function Tab() {
         createdByUsername={createdByUsername}
         title={title}
         tab={tab}
+        onSave={onEditSave}
       />
     );
   }
