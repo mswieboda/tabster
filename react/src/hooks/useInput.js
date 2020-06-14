@@ -15,3 +15,17 @@ export const useInput = initialValue => {
     }
   };
 };
+
+export const useNonNativeInput = initialValue => {
+  const [value, setValue] = useState(initialValue);
+
+  return {
+    value,
+    setValue,
+    reset: () => setValue(""),
+    bind: {
+      value,
+      onChange: setValue
+    }
+  };
+};

@@ -68,28 +68,24 @@ module Tabster
   end
 
   post "/api/tabs" do |env|
-    title = env.params.json["title"].as(String)
-    artist_id = env.params.json["artist_id"].as(Int64 | Nil)
-    artist = env.params.json["artist"].as(String | Nil)
-    tab = env.params.json["tab"].as(String)
+    artist = env.params.json["artist"].as(Hash(String, JSON::Any)) if env.params.json.has_key?("artist")
 
-    if artist_id
-      Tab.create({
-        title:     title,
-        artist_id: artist_id.to_i,
-        tab:       tab,
-      }).to_json
-    elsif !artist.blank?
-      artist = Artist.create({name: artist})
+    raise ValidationError.new(env, "artist required") unless artist
 
-      Tab.create({
-        title:     title,
-        artist_id: artist.id,
-        tab:       tab,
-      }).to_json
-    else
-      raise ValidationError.new(env, "Artist required")
-    end
+    artist_id = artist["id"].as_i?
+    artist_name = artist["name"].as_s?
+
+    title = env.params.json["title"]?
+    tab = env.params.json["tab"]?
+
+    artist_id ||= Artist.create({name: artist_name}).id
+
+    Tab.create({
+      title:     title.to_s,
+      artist_id: artist_id,
+      created_by_id: current_user?(env).try(&.id),
+      tab:       tab.to_s,
+    }).to_json
   end
 
   get "/api/tabs/:artist" do |env|

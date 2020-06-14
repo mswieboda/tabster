@@ -9,7 +9,8 @@
 .tab-actions {
   display: flex;
 
-  .action {
+  .action,
+  .link-primary.action {
     margin: 0;
     margin-left: 5px;
     padding: 5px 10px;

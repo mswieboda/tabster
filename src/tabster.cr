@@ -1,6 +1,7 @@
 require "../config/config"
 require "kemal"
 
+require "./routes/helpers/*"
 require "./routes/*"
 
 module Tabster

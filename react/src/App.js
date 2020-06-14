@@ -5,7 +5,7 @@ import { UserProvider } from './contexts/UserContext';
 import TopNav from './TopNav';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
-import NewTab from './NewTab';
+import TabNew from './TabNew';
 import ArtistTabs from './ArtistTabs';
 import Tabs from './Tabs';
 import Tab from './Tab';
@@ -35,7 +35,7 @@ function App() {
               <Route path="/tabs">
                 <Switch>
                   <Route exact path="/tabs" component={Tabs} />
-                  <Route exact path="/tabs/new" component={NewTab} />
+                  <Route exact path="/tabs/new" component={TabNew} />
                   <Route path="/tabs/:artist">
                     <Switch>
                       <Route exact path="/tabs/:artist" component={ArtistTabs} />

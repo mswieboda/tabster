@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
 import { UserContext } from './contexts/UserContext';
 import { toURL } from './utils/url';
+import TabEdit from './TabEdit';
 import TabLink from './TabLink';
 import UserLink from './UserLink';
 import {
@@ -13,16 +14,20 @@ import {
 
 import './Tab.scss';
 
-function Tab(props) {
+function Tab() {
   const { user } = useContext(UserContext)
   const params = useParams();
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
+
+  const [tabID, setTabID] = useState(null);
   const [artist, setArtist] = useState(null);
   const [createdByUsername, setCreatedByUsername] = useState(null);
   const [tab, setTab] = useState(null);
   const [title, setTitle] = useState(null);
+
   const [error, setError] = useState(null);
+  const [edit, setEdit] = useState(false);
 
   const canEdit = () => createdByUsername === user.username;
   const canAdd = () => user.isLoggedIn;
@@ -31,11 +36,11 @@ function Tab(props) {
     function sameTabLoaded(artist, title, params) {
       if (!artist || !title || !params.artist || !params.title) return false;
 
-      function toLowerURL(artist, title) {
-        return toURL(`${artist}/${title}`).toLowerCase();
+      function toLowerURL(artistName, title) {
+        return toURL(`${artistName}/${title}`).toLowerCase();
       }
 
-      return toLowerURL(artist, title) === toLowerURL(params.artist, params.title);
+      return toLowerURL(artist.name, title) === toLowerURL(params.artist, params.title);
     }
 
     if (loading || error || (loaded && sameTabLoaded(artist, title, params))) {
@@ -49,6 +54,7 @@ function Tab(props) {
     axios.get(`/api/tabs/${params.artist}/${params.title}`).then(response => {
       const data = response.data;
 
+      setTabID(data.id);
       setArtist(data.artist);
       setCreatedByUsername(data.created_by_username);
       setTab(data.tab);
@@ -80,14 +86,27 @@ function Tab(props) {
     return message;
   }
 
+  if (edit) {
+    return(
+      <TabEdit
+        id={tabID}
+        user={user}
+        artist={artist}
+        createdByUsername={createdByUsername}
+        title={title}
+        tab={tab}
+      />
+    );
+  }
+
   return (
     <div>
       <div className="tab-header">
         <div>
           <div>
-            <TabLink artist={artist} title={title} />{' '}
+            <TabLink artist={artist.name} title={title} />{' '}
             by{' '}
-            <Link to={`/tabs/${toURL(artist)}`}>{artist}</Link>{' '}
+            <Link to={`/tabs/${toURL(artist.name)}`}>{artist.name}</Link>{' '}
           </div>
           <div>
             created by <UserLink username={createdByUsername} />
@@ -95,10 +114,19 @@ function Tab(props) {
         </div>
         <div className="tab-actions">
           {canEdit() &&
-            <TabLink className="action" artist={artist} title={title} edit={true}><EditIcon /> edit</TabLink>
+            <span
+              className="link-primary action"
+              onClick={() => setEdit(true)}
+            >
+              <EditIcon /> edit
+            </span>
           }
           {canAdd() &&
-            <TabLink className="action" artist={artist} title={title} edit={true}><AddIcon /> add</TabLink>
+            <span
+              className="link-primary action"
+            >
+              <AddIcon /> add
+            </span>
           }
           <a className="action" href="https://last.fm/music/blink-182"><LastFMIcon /> lastfm</a>
         </div>

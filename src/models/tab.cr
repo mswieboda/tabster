@@ -18,7 +18,12 @@ class Tabster::Tab < Jennifer::Model::Base
 
   def to_json(json : JSON::Builder)
     json.object do
-      json.field "artist", artist.try(&.name) || Artist::ANONYMOUS_NAME
+      json.field "id", id
+
+      json.field "artist" do
+        artist.to_json(json)
+      end
+
       json.field "created_by_username", created_by.try(&.username) || User::ANONYMOUS_USERNAME
       json.field "tab", tab
       json.field "title", title

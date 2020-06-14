@@ -49,6 +49,7 @@ function ComboBox({
 
   const onItemSelect = item => {
     if (item) {
+      onItemHighlight(item);
       onSelect(item);
       onItemsClear();
     }
