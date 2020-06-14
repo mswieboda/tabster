@@ -7,13 +7,13 @@ function SignInUp() {
   return (
     <div className="sign-in-up">
       <Link
-        className="btn-primary"
+        className="link-primary"
         to="/sign-in"
       >
         sign in
       </Link>
       <Link
-        className="btn-primary"
+        className="link-primary"
         to="/sign-up"
       >
         sign up

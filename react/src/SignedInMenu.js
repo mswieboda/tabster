@@ -43,15 +43,15 @@ function SignedInMenu({history}) {
   useOnBlur(ref, () => setMenuOpen(false));
 
   return (
-    <div ref={ref}>
-      <button
-        className="btn-primary"
+    <div className="signed-in-menu" ref={ref}>
+      <div
+        className="menu-btn link-primary"
         onClick={onMenuClick}
       >
         <MenuIcon />
-      </button>
+      </div>
       {menuOpen &&
-        <div className="signed-in-menu">
+        <div className="menu">
           <div>
             {user.username}
           </div>
@@ -61,7 +61,7 @@ function SignedInMenu({history}) {
           <div>
             <Link to={`/user/reset-password`}>reset password</Link>
           </div>
-          <div className="signed-in-menu-footer">
+          <div className="footer">
             <span
               className="link-primary"
               onClick={onSignOut}

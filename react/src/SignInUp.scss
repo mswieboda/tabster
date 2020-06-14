@@ -1,5 +1,8 @@
 .sign-in-up {
-  .btn-primary {
+  .link-primary,
+  .link-primary:hover {
+    margin: 0;
     margin-right: 5px;
+    padding: 5px;
   }
 }
