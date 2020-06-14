@@ -58,7 +58,7 @@ class Tabster::User < Jennifer::Model::Base
   end
 
   def reset_password_uri
-    "user/reset_password?email=#{email}&token=#{email_confirmation_token}"
+    "user/reset-password?email=#{email}&token=#{email_confirmation_token}"
   end
 
   def send_email_confirmation(app_root)
