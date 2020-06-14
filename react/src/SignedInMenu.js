@@ -32,25 +32,33 @@ function SignedInMenu({history}) {
   };
 
   return (
-    <DropMenu button={() => <MenuIcon />}>
-      <div>
-        {user.username}
-      </div>
-      <div>
-        {user.email}
-      </div>
-      <div>
-        <Link to={`/user/reset-password`}>reset password</Link>
-      </div>
-      <div className="signed-in-menu-footer">
-        <span
-          className="link-primary"
-          onClick={onSignOut}
-        >
-          sign out
-        </span>
-      </div>
-    </DropMenu>
+    <div className="signed-in-menu">
+      <DropMenu
+        button={() =>
+          <span className="menu-btn link-primary">
+            <MenuIcon />
+          </span>
+        }
+      >
+        <div>
+          {user.username}
+        </div>
+        <div>
+          {user.email}
+        </div>
+        <div>
+          <Link to={`/user/reset-password`}>reset password</Link>
+        </div>
+        <div className="menu-footer">
+          <span
+            className="link-primary"
+            onClick={onSignOut}
+          >
+            sign out
+          </span>
+        </div>
+      </DropMenu>
+    </div>
   );
 }
 
