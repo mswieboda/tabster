@@ -14,6 +14,8 @@ class Tabster::Artist < Jennifer::Model::Base
 
   has_many :tabs, Tab
 
+  validates_uniqueness :name
+
   def to_json(json : JSON::Builder)
     json.object do
       json.field "id", id

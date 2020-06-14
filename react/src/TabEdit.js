@@ -27,9 +27,14 @@ function TabEdit({
     }).then(response => {
       onSaveProp(response.data);
     }).catch(error => {
-      console.log(error);
+      const data = error.response.data;
+
       setSaving(false);
-      setError(error.message);
+
+      if (data) {
+        console.log(data.message);
+        setError(data.message);
+      }
     });
   };
 

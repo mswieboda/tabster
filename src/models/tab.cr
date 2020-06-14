@@ -16,6 +16,8 @@ class Tabster::Tab < Jennifer::Model::Base
   belongs_to :artist, Artist
   belongs_to :created_by, User, foreign: :created_by_id
 
+  validates_uniqueness :artist_id, :title
+
   def to_json(json : JSON::Builder)
     json.object do
       json.field "id", id

@@ -78,14 +78,16 @@ module Tabster
     title = env.params.json["title"]?
     tab = env.params.json["tab"]?
 
-    artist_id ||= Artist.create({name: artist_name}).id
+    artist_id ||= Artist.create!({name: artist_name}).id
 
-    Tab.create({
+    Tab.create!({
       title:     title.to_s,
       artist_id: artist_id,
       created_by_id: current_user_id(env),
       tab:       tab.to_s,
     }).to_json
+  rescue ex : Jennifer::RecordInvalid
+    raise ValidationError.new(env, ex.message)
   end
 
   patch "/api/tabs/:id" do |env|
@@ -99,7 +101,7 @@ module Tabster
       artist_id = artist["id"].as_i?
       artist_name = artist["name"].as_s?
 
-      artist_id ||= Artist.create({name: artist_name}).id
+      artist_id ||= Artist.create!({name: artist_name}).id
 
       tab.artist_id = artist_id
     end
@@ -113,6 +115,8 @@ module Tabster
     tab.save!
 
     tab.to_json
+  rescue ex : Jennifer::RecordInvalid
+    raise ValidationError.new(env, ex.message)
   end
 
   get "/api/tabs/:artist" do |env|

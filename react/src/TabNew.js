@@ -24,9 +24,14 @@ function TabNew({history}) {
         history.push(`/tabs/${toURL(data.artist.name)}/${toURL(data.title)}`);
       }
     }).catch(error => {
-      console.log(error);
+      const data = error.response.data;
+
       setSaving(false);
-      setError(error.message);
+
+      if (data) {
+        console.log(data.message);
+        setError(data.message);
+      }
     });
   };
 
