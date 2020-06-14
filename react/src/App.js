@@ -3,7 +3,6 @@ import React from 'react';
 import { UserProvider } from './contexts/UserContext';
 
 import TopNav from './TopNav';
-import SignIn from './SignIn';
 import SignUp from './SignUp';
 import TabNew from './TabNew';
 import ArtistTabs from './ArtistTabs';
@@ -30,7 +29,6 @@ function App() {
           <div className="page">
             <Switch>
               <Redirect exact from="/" to="/tabs" />
-              <Route path="/sign-in" component={SignIn} />
               <Route path="/sign-up" component={SignUp} />
               <Route path="/tabs">
                 <Switch>
