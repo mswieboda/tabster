@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { UserContext } from './contexts/UserContext';
+import { withRouter } from 'react-router-dom';
 import { signIn } from './apis/user';
 import UnconfirmedUser from './UnconfirmedUser';
 import ForgotPassword from './ForgotPassword';
@@ -38,7 +39,7 @@ function SignIn({history}) {
   };
 
   return (
-    <form onSubmit={onSubmit} className="centered">
+    <form onSubmit={onSubmit}>
       {unconfirmed && <UnconfirmedUser />}
 
       <div className="field">
@@ -66,11 +67,10 @@ function SignIn({history}) {
           value="sign in"
         />
       </div>
-      <div className="field">
-        <ForgotPassword />
-      </div>
+
+      <ForgotPassword />
     </form>
   );
 }
 
-export default SignIn;
+export default withRouter(SignIn);

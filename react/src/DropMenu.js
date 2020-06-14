@@ -11,37 +11,35 @@ function DropMenu({
   const ref = useRef();
 
   const onClick = event => {
-    if (event.target.onclick) {
+    if (event.target.onclick && event.target.href) {
       setOpen(false);
     }
   };
 
   const onMenuButtonClick = event => {
-    event.stopPropagation();
-
     setOpen(!open);
   };
 
   useOnBlur(ref, () => setOpen(false));
 
   return(
-    <div
+    <span
       className="drop-menu"
       onClick={onClick}
       ref={ref}
     >
-      <div
+      <span
         className="menu-btn link-primary"
         onClick={onMenuButtonClick}
       >
         {button()}
-      </div>
+      </span>
       {open &&
         <div className="menu">
           {children}
         </div>
       }
-    </div>
+    </span>
   );
 }
 

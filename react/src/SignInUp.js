@@ -1,17 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import DropMenu from './DropMenu';
+import SignIn from './SignIn';
 
 import './SignInUp.scss';
 
 function SignInUp() {
   return (
     <div className="sign-in-up">
-      <Link
-        className="link-primary"
-        to="/sign-in"
-      >
-        sign in
-      </Link>
+      <DropMenu button={() => <span className="link-primary">sign in</span>}>
+        <SignIn />
+      </DropMenu>
       <Link
         className="link-primary"
         to="/sign-up"

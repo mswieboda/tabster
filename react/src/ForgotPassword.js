@@ -26,11 +26,13 @@ function ForgotPassword() {
 
   if (!showForgotPassword) {
     return(
-      <span
-        className="link-primary"
-        onClick={() => setShowForgotPassword(true)}
-      >
-        forgot password?
+      <span className="field">
+        <span
+          className="link-primary"
+          onClick={() => setShowForgotPassword(true)}
+        >
+          forgot password?
+        </span>
       </span>
     );
   }
