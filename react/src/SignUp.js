@@ -32,7 +32,7 @@ function SignUp({history}) {
   }
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} className="centered">
       <div className="field">
         <TextInput
           type="text"

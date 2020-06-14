@@ -38,7 +38,7 @@ function SignIn({history}) {
   };
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} className="centered">
       {unconfirmed && <UnconfirmedUser />}
 
       <div className="field">
@@ -65,9 +65,9 @@ function SignIn({history}) {
           className="btn-primary"
           value="sign in"
         />
-        <span className="field">
-          <ForgotPassword />
-        </span>
+      </div>
+      <div className="field">
+        <ForgotPassword />
       </div>
     </form>
   );
