@@ -6,19 +6,22 @@
 shards install
 ```
 
-## Usage
+## openssl Issue/Fix
 
 Needed to find openssl library (installed via `brew install openssl`)
+Needs pkg-config from `brew install pkg-config` too
 
 ```
 # can put this in `.zshrc` / `.bash_profile` for ease of use:
 export PKG_CONFIG_PATH="/usr/local/opt/openssl@1.1/lib/pkgconfig"
 ```
 
-To run the backend Kemal web app (port 3001, configurable in Makefile):
+## DB setup
+
+To setup DB roles:
 
 ```
-make tabster
+createuser --createdb tabster
 ```
 
 To run migrations, create DB, etc, access `sam` via `make`:
@@ -26,6 +29,14 @@ To run migrations, create DB, etc, access `sam` via `make`:
 ```
 make sam db:create
 make sam db:migrate
+```
+
+## Usage
+
+To run the backend Kemal web app (port 3001, configurable in Makefile):
+
+```
+make tabster
 ```
 
 To run the React dev server

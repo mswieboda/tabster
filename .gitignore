@@ -2,6 +2,7 @@
 /lib/
 /bin/
 /.shards/
+/node_modules/
 *.dwarf
 .DS_Store
 .env
