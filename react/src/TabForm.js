@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   useInput,
   useNonNativeInput,
@@ -23,7 +23,14 @@ onSave,
 }) {
   const { value: title, bind: bindTitle } = useInput(props.title || "");
   const { value: artist, bind: bindArtist } = useNonNativeInput(props.artist || {id: null, name: ""});
-  const { value: tab, bind: bindTab } = useInput(props.tab || tabPlaceholder);
+  const { value: tab, bind: bindTab } = useNonNativeInput(props.tab || tabPlaceholder);
+  const [insertMode, setInsertMode] = useState(true);
+
+  const onToggleOverwrite = event => {
+    event.preventDefault();
+
+    setInsertMode(!insertMode);
+  };
 
   const onSubmit = event => {
     event.preventDefault();
@@ -51,8 +58,20 @@ onSave,
         </div>
       </div>
 
+      <div className="field">
+        <button
+          className={`btn-primary ${insertMode ? '' : 'toggled'}`}
+          onClick={onToggleOverwrite}
+        >
+          overwriting {`${insertMode ? 'OFF' : 'ON'}`}
+        </button>
+      </div>
+
       <div className="field tab">
-        <TabEditor {...bindTab} />
+        <TabEditor
+          {...bindTab}
+          insertMode={insertMode}
+        />
       </div>
 
       <div className="field">

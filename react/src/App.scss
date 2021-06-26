@@ -60,6 +60,11 @@ a,
   &:focus {
     outline: auto;
   }
+
+  &.toggled {
+    background-color: $color-bg-highlight;
+    color: $color-primary-highlight;
+  }
 }
 
 form {
