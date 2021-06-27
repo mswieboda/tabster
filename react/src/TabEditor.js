@@ -7,33 +7,32 @@ import './TabEditor.scss';
 
 function TabEditor({value, onChange, insertMode}) {
   const onBeforeChange = (editor, data, _value) => {
-    let { to, text, origin } = data;
-    let { line, ch } = to;
-    let lines = value.split('\n');
+    let { text } = data;
+    const { to, origin } = data;
+    const { line, ch } = to;
+    const lines = value.split('\n');
+    const deleting = origin === "+delete";
+    // NOTE: length + 1 to account for '\n' which isn't included in `ch`
+    const priorToCursorLineLengths = lines.slice(0, line).map(line => line.length + 1);
+    const cursorIndex = priorToCursorLineLengths.reduce((a, b) => a + b, ch);
 
+    // squash the array to string
     text = text.join('');
+    // prep for return/backspace
     text = text === '' ? '\n' : text;
 
     // TODO: doesn't work with selections, need to use `from`
+    let nextChar = value.charAt(cursorIndex);
+    let overwrite = deleting || (!insertMode && nextChar === '-' && text !== '-' && text !== '\n');
 
-    if (origin === "+input") {
-      let nextChar = lines[line].charAt(ch);
-      let overwrite = !insertMode && nextChar === '-' && text !== "-" && text !== '\n';
-
-      lines[line] = lines[line].substr(0, ch) + text + lines[line].substr(ch + (overwrite ? 1 : 0));
-    } else if (origin === "+delete") {
-      if (ch === 0) {
-        lines[line - 1] += lines[line];
-        lines.splice(line, 1);
-      } else {
-        let prevChar = lines[line].charAt(ch - 1);
-        let deleteAsDash = !insertMode && prevChar !== '-';
-
-        lines[line] = lines[line].substr(0, ch - 1) + (deleteAsDash ? '-' : '') + lines[line].substr(ch);
-      }
+    if (deleting) {
+      text = insertMode || value.charAt(cursorIndex - 1) === '-' ? '' : '-';
     }
 
-    onChange(lines.join('\n'));
+    const newValue = value.substring(0, cursorIndex - (deleting ? 1 : 0)) +
+      text + value.substring(cursorIndex + (overwrite && !deleting ? 1 : 0));
+
+    onChange(newValue);
   }
 
   return (
