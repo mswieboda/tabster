@@ -22,6 +22,7 @@ function TabEditor({value, onChange, insertMode}) {
     text = text === '' ? '\n' : text;
 
     // TODO: doesn't work with selections, need to use `from`
+    // TODO: broken when deleting the `\n` in overwrite mode, off by 1
     let nextChar = value.charAt(cursorIndex);
     let overwrite = deleting || (!insertMode && nextChar === '-' && text !== '-' && text !== '\n');
 
