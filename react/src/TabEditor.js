@@ -22,12 +22,14 @@ function TabEditor({value, onChange, insertMode}) {
     text = text === '' ? '\n' : text;
 
     // TODO: doesn't work with selections, need to use `from`
-    // TODO: broken when deleting the `\n` in overwrite mode, off by 1
     let nextChar = value.charAt(cursorIndex);
     let overwrite = deleting || (!insertMode && nextChar === '-' && text !== '-' && text !== '\n');
 
     if (deleting) {
-      text = insertMode || value.charAt(cursorIndex - 1) === '-' ? '' : '-';
+      // TODO: replacing/deleting same char (- with another -) doesn't move the cursor
+      //       figure out how to move the cursor for this case
+      const deleteWithDash = ['-', '\n'].indexOf(value.charAt(cursorIndex - 1)) === -1;
+      text = !insertMode && deleteWithDash ? '-' : '';
     }
 
     const newValue = value.substring(0, cursorIndex - (deleting ? 1 : 0)) +
