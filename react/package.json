@@ -3,20 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "axios": "^0.19.2",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "axios": "^0.21.1",
     "codemirror": "^5.62.0",
     "node-sass": "^4.14.1",
-    "query-string": "^6.13.0",
-    "react": "^16.13.1",
-    "react-codemirror2": "^7.1.0",
-    "react-dom": "^16.13.1",
+    "query-string": "^7.0.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-icons": "^3.10.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1",
-    "websocket-extensions": "^0.1.4"
+    "react-scripts": "4.0.3",
+    "react17-codemirror2": "stardust66/react-codemirror2#01c0f009da94bf9345ef88165d5b0bce2d4ac316",
+    "web-vitals": "^1.0.1"
   },
   "proxy": "http://localhost:3000",
   "scripts": {
@@ -26,7 +26,10 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
     "production": [
