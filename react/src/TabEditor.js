@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {Controlled as CodeMirror} from 'react17-codemirror2';
 
 import 'codemirror/lib/codemirror.css';
@@ -6,6 +6,8 @@ import './codemirror-tabster.scss';
 import './TabEditor.scss';
 
 function TabEditor({value, onChange, insertMode}) {
+  const [instance, setInstance] = useState(null);
+
   const getSelectionIndex = (cursor, lines) => {
     // NOTE: mapping length + 1 to account for ending '\n' which isn't included in `ch`
     return lines
@@ -17,27 +19,38 @@ function TabEditor({value, onChange, insertMode}) {
   const onBeforeChange = (editor, data, _value) => {
     const { text: textData, from, to, origin } = data;
     const lines = value.split('\n');
-    const deleting = origin === "+delete";
     const [fromIndex, toIndex] = [getSelectionIndex(from, lines), getSelectionIndex(to, lines)];
-    const selecting = toIndex - fromIndex > (deleting ? 1 : 0);
+    const deleting = origin === "+delete";
     const textDataStr = textData.join('');
-    let text = textDataStr === '' ? '\n' : textDataStr;
-    let overwriting = deleting || !insertMode;
+    const selecting = toIndex - fromIndex > (deleting ? 1 : 0);
+    let text = !deleting && textDataStr === '' ? '\n' : textDataStr;
+    let overwriting = !insertMode;
 
-    // TODO: overwriting same char (- with another -, or x for x etc) doesn't move the cursor
     if (overwriting) {
       const selectionOrCharAtCursor = value.substring(fromIndex, toIndex);
       const allDashes = selectionOrCharAtCursor.split('').every(char => char === '-');
+      const nextChar = value.charAt(toIndex);
 
-      overwriting = !selecting && allDashes && text !== '-' && text !== '\n' && value.charAt(toIndex) !== '\n';
+      overwriting = !selecting && allDashes && text !== '\n' && nextChar !== '\n';
+
+      if (overwriting && nextChar === text) {
+        instance.setCursor({ line: from.line, ch: from.ch + 1 });
+        return;
+      }
     }
 
-    // TODO: deleting and clearing with same char (- with another -) doesn't move the cursor
+    // TODO: when !insertMode and deleting 1 char of selected text, it acts as overwrite deleting, moving cursor
+    //       this is because it's hard to distinguish a normal delete [from,to] with a selected delete
     if (deleting) {
       const lastChar = value.charAt(toIndex - 1);
-      const deleteWithDash = !selecting && ['-', '\n'].indexOf(lastChar) === -1;
+      const cursorMovementOnly = ['-', '\n', '', '|'].indexOf(lastChar) > -1;
 
-      text = !insertMode && deleteWithDash ? '-' : '';
+      if (!selecting && !insertMode && cursorMovementOnly) {
+        instance.setCursor({ line: to.line, ch: to.ch - (lastChar === '-' ? 1 : 0) });
+        return;
+      }
+
+      text = !insertMode && !selecting ? '-' : '';
     }
 
     const newValue = value.substring(0, fromIndex - (overwriting && deleting ? 1 : 0)) +
@@ -54,6 +67,7 @@ function TabEditor({value, onChange, insertMode}) {
         theme: 'tabster',
         lineNumbers: false
       }}
+      editorDidMount={editor => { setInstance(editor) }}
       onBeforeChange={onBeforeChange}
     />
   );
