@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {UnControlled as CodeMirror} from 'react17-codemirror2';
 
 import 'codemirror/lib/codemirror.css';

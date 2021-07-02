@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import {
   useInput,
   useNonNativeInput,
@@ -47,8 +47,7 @@ onSave,
   const onOverwritingBeforeChange = (editor, data) => {
     if (!editor.state.overwrite) return;
 
-    let text = { data }
-    const { from, to, cancel, update, origin } = data;
+    const { from, to, cancel, origin } = data;
     const deleting = origin === "+delete";
     const selecting = from.line !== to.line || to.ch - from.ch > (deleting && from.sticky === 1 ? 1 : 0);
 
