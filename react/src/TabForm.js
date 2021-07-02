@@ -27,6 +27,11 @@ onSave,
   const [codeMirrorInstance, setCodeMirrorInstance] = useState(null);
   const [overwriting, setOverwriting] = useState(false);
 
+  const initialSetCodeMirrorInstance = instance => {
+    setCodeMirrorInstance(instance);
+    instance.on('beforeChange', onOverwritingBeforeChange);
+  };
+
   const onToggleOverwrite = event => {
     event.preventDefault();
 
@@ -34,14 +39,6 @@ onSave,
 
     setOverwriting(willBeOverwriting);
     codeMirrorInstance.toggleOverwrite(willBeOverwriting);
-
-    if (willBeOverwriting) {
-      codeMirrorInstance.on('beforeChange', onOverwritingBeforeChange);
-    } else {
-      // TODO: does not correctly remove the event handler
-      //       checking `editor.state.overwrite` in onOverwritingBeforeChange as workaround
-      codeMirrorInstance.off('beforeChange', null);
-    }
   };
 
   const onOverwritingBeforeChange = (editor, data) => {
@@ -110,7 +107,7 @@ onSave,
           {...bindTab}
           overwriting={overwriting}
           codeMirrorInstance={codeMirrorInstance}
-          setCodeMirrorInstance={setCodeMirrorInstance}
+          setCodeMirrorInstance={initialSetCodeMirrorInstance}
         />
       </div>
 
