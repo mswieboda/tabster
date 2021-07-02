@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   useInput,
   useNonNativeInput,
@@ -24,12 +24,51 @@ onSave,
   const { value: title, bind: bindTitle } = useInput(props.title || "");
   const { value: artist, bind: bindArtist } = useNonNativeInput(props.artist || {id: null, name: ""});
   const { value: tab, bind: bindTab } = useNonNativeInput(props.tab || tabPlaceholder);
-  const [insertMode, setInsertMode] = useState(true);
+  const [codeMirrorInstance, setCodeMirrorInstance] = useState(null);
+  const [overwriting, setOverwriting] = useState(false);
 
   const onToggleOverwrite = event => {
     event.preventDefault();
 
-    setInsertMode(!insertMode);
+    const willBeOverwriting = !overwriting;
+
+    setOverwriting(willBeOverwriting);
+    codeMirrorInstance.toggleOverwrite(willBeOverwriting);
+
+    if (willBeOverwriting) {
+      codeMirrorInstance.on('beforeChange', onOverwritingBeforeChange);
+    } else {
+      // TODO: does not correctly remove the event handler
+      //       checking `editor.state.overwrite` in onOverwritingBeforeChange as workaround
+      codeMirrorInstance.off('beforeChange', null);
+    }
+  };
+
+  const onOverwritingBeforeChange = (editor, data) => {
+    if (!editor.state.overwrite) return;
+
+    let text = { data }
+    const { from, to, cancel, update, origin } = data;
+    const deleting = origin === "+delete";
+    const selecting = from.line !== to.line || to.ch - from.ch > (deleting && from.sticky === 1 ? 1 : 0);
+
+    if (deleting && !selecting) {
+      const lines = editor.doc.children[0].lines;
+      const line = lines[from.line].text;
+      const lastChar = line.charAt(from.ch);
+      const cursorMovementOnly = from.ch === 0 || ['-', '\n', '', '|'].indexOf(lastChar) > -1;
+
+      cancel();
+
+      if (cursorMovementOnly) {
+        if (lastChar === '-') {
+          editor.execCommand('goColumnLeft');
+        }
+      } else {
+        editor.doc.replaceRange("-", from, to);
+        editor.execCommand('goColumnLeft');
+      }
+    }
   };
 
   const onSubmit = event => {
@@ -60,17 +99,19 @@ onSave,
 
       <div className="field">
         <button
-          className={`btn-primary ${insertMode ? '' : 'toggled'}`}
+          className={`btn-primary ${overwriting ? 'toggled' : ''}`}
           onClick={onToggleOverwrite}
         >
-          overwriting {`${insertMode ? 'OFF' : 'ON'}`}
+          overwriting {`${overwriting ? 'ON' : 'OFF'}`}
         </button>
       </div>
 
       <div className="field tab">
         <TabEditor
           {...bindTab}
-          insertMode={insertMode}
+          overwriting={overwriting}
+          codeMirrorInstance={codeMirrorInstance}
+          setCodeMirrorInstance={setCodeMirrorInstance}
         />
       </div>
 
