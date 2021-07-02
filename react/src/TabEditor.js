@@ -39,8 +39,6 @@ function TabEditor({value, onChange, insertMode}) {
       }
     }
 
-    // TODO: when !insertMode and deleting 1 char of selected text, it acts as overwrite deleting, moving cursor
-    //       this is because it's hard to distinguish a normal delete [from,to] with a selected delete
     if (deleting) {
       const lastChar = value.charAt(toIndex - 1);
       const cursorMovementOnly = ['-', '\n', '', '|'].indexOf(lastChar) > -1;
