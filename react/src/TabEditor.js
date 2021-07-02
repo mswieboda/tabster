@@ -22,7 +22,7 @@ function TabEditor({value, onChange, insertMode}) {
     const [fromIndex, toIndex] = [getSelectionIndex(from, lines), getSelectionIndex(to, lines)];
     const deleting = origin === "+delete";
     const textDataStr = textData.join('');
-    const selecting = toIndex - fromIndex > (deleting ? 1 : 0);
+    const selecting = toIndex - fromIndex > (deleting && from.sticky === 1 ? 1 : 0);
     let text = !deleting && textDataStr === '' ? '\n' : textDataStr;
     let overwriting = !insertMode;
 
