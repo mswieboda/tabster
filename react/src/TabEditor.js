@@ -18,6 +18,12 @@ function TabEditor({value, onChange, insertMode}) {
 
   const onBeforeChange = (editor, data, _value) => {
     const { text: textData, from, to, origin } = data;
+
+    if (origin === "undo") {
+      onChange(_value);
+      return;
+    }
+
     const lines = value.split('\n');
     const [fromIndex, toIndex] = [getSelectionIndex(from, lines), getSelectionIndex(to, lines)];
     const deleting = origin === "+delete";
