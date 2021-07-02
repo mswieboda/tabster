@@ -19,7 +19,7 @@ function TabEditor({value, onChange, insertMode}) {
   const onBeforeChange = (editor, data, _value) => {
     const { text: textData, from, to, origin } = data;
 
-    if (origin === "undo") {
+    if (["undo", "paste", "cut"].indexOf(origin) > -1) {
       onChange(_value);
       return;
     }
